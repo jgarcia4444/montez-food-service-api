@@ -1,15 +1,20 @@
 class SessionsController < ApplicationController
     def login
+        puts "LOGIN ACTION TRIGGERED"
         if params[:user_info]
+            puts "USER INFO FOUND"
             user_info = params[:user_info]
             if user_info[:email]
+                puts "EMAIL FOUND IN USER INFO"
                 email = user_info[:email]
                 user = User.find_by(email: email)
                 if user
+                    puts "USER FOUND WITH EMAIL"
                     if user_info[:password]
-                        password = params[:password]
+                        password = user_info[:password]
                         authenticated_user = user.authenticate(password)
                         if authenticated_user
+                            puts "User authenticated!"
                             render :json => {
                                 success: true,
                                 userInfo: {

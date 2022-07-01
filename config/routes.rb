@@ -6,5 +6,6 @@ Rails.application.routes.draw do
   root "sessions#root"
 
   post "users", to: "users#create"
+  post "users/login", to: "sessions#login"
 
 end
