@@ -1,6 +1,8 @@
-class UsersController > ApplicationController
+class UsersController < ApplicationController
 
     def create
+        puts "CREATE ACTION TRIGGERED."
+        puts params
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
@@ -12,6 +14,7 @@ class UsersController > ApplicationController
                     }
                 }
             else
+                puts "INVALID USER!!!"
                 render :json => {
                     success: false,
                     error: {
@@ -21,6 +24,7 @@ class UsersController > ApplicationController
                 }
             end
         else
+            puts "USER INFO SENT INCORRECTLY!!"
             render :json => {
                 success: false,
                 error: {
