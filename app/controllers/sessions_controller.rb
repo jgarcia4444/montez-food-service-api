@@ -26,6 +26,7 @@ class SessionsController < ApplicationController
                             render :json => {
                                 success: false,
                                 error: {
+                                    errorLabel: "password",
                                     message: "Incorrect Password"
                                 }
                             }
@@ -42,6 +43,7 @@ class SessionsController < ApplicationController
                     render :json => {
                         success: false,
                         error: {
+                            errorLabel: "email",
                             message: "User not found with the given email."
                         }
                     }
@@ -62,8 +64,6 @@ class SessionsController < ApplicationController
                 }
             }
         end
-    end
-    def logout
     end
 
     def root
