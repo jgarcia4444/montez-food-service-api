@@ -95,6 +95,85 @@ class UsersController < ApplicationController
         end
     end
 
+    def change_password
+        if params[:user_info]
+            user_info = params[:user_info]
+            if user_info[:ota_code]
+                ota_code = user_info[:ota_code]
+                if user_info[:email]
+                    email = user_info[:email]
+                    user_changing_password = User.find_by(email: email)
+                    if user_changing_password
+                        if user_changing_password.ota_code == ota_code
+                            if user_info[:new_password]
+                                new_password = user_info[:new_password]
+                                user_changing_password.update(password: new_password)
+                                if user_changing_password.valid?
+                                    render :json => {
+                                        success: true,
+                                        userInfo: {
+                                            email: user_changing_password.email,
+                                            companyName: user_changing_password.company_name
+                                        }
+                                    }
+                                else
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "There was an error saving the new password."
+                                        }
+                                    }
+                                end
+                            else
+                                render :json => {
+                                    success: false,
+                                    error: {
+                                        message: "A new password must be sent with the information sent to the backend."
+                                    }
+                                }
+                            end
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "Ota code does not match the most recent code persisted."
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "A user was not found with the email sent."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "Associated email must be sent to change the users password."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    errro: {
+                        message: "The users ota code was not sent with information."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "User information was sent improperly."
+                }
+            }
+        end
+    end
+
     def user_params
         params.require(:user_info).permit(:email, :password, :company_name)
     end
