@@ -8,4 +8,7 @@ Rails.application.routes.draw do
   post "users", to: "users#create"
   post "users/login", to: "sessions#login"
 
+  post "users/forgot-password", to: "users#forgot_password"
+  
+
 end

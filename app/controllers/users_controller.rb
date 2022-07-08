@@ -51,6 +51,9 @@ class UsersController < ApplicationController
                             UserNotifierMailer.send_code(user_to_send_code)
                             render :json => {
                                 success: true,
+                                userInfo: {
+                                    email: user_to_send_code.email
+                                }
                             }
                         rescue StandardError => e
                             render :json => {
@@ -90,6 +93,65 @@ class UsersController < ApplicationController
                 success: false,
                 error: {
                     message: "User information was not sent properly."
+                }
+            }
+        end
+    end
+
+    def check_code
+        if params[:user_info]
+            user_info = params[:user_info]
+            if user_info[:email]
+                email = user_info[:email]
+                check_code_user = User.find_by(email: email)
+                if check_code_user
+                    if user_info[:ota_code]
+                        ota_code = user_info[:ota_code]
+                        if check_code_user.ota_code == ota_code
+                            render :json => {
+                                success: true,
+                                userInfo: {
+                                    email: check_code_user.email,
+                                    otaCode: check_code_user.ota_code
+                                },
+                            }
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "Incorrect code."
+                                }
+                            }
+                        end
+                    else 
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "The code sent to the users email was not present when checking for the correct code."
+                            }
+                        }
+                    end
+                else 
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "No user was found with the given email."
+                        }
+                    }
+                end
+            else 
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "The users email was not sent with the data to check the code."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "User information was sent improperly"
                 }
             }
         end
