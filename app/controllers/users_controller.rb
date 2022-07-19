@@ -48,7 +48,7 @@ class UsersController < ApplicationController
                     puts "User Validity! #{user_to_send_code.valid?}"
                     if user_to_send_code.valid?
                         begin
-                            UserNotifierMailer.send_code(user_to_send_code)
+                            UserNotifierMailer.send_code(user_to_send_code).deliver_now
                             render :json => {
                                 success: true,
                                 userInfo: {

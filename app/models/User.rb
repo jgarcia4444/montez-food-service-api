@@ -9,7 +9,7 @@ class User < ApplicationRecord
         ota_string = ""
         6.times do |i|
             random_number = rand(10)
-            ota_string += random_number.to_str
+            ota_string += random_number.to_s
         end
         self.update(ota_code: ota_string)
     end
