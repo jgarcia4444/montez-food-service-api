@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   post "users/forgot-password", to: "users#forgot_password"
   post "users/forgot-password/check-code", to: "users#check_code"
-  post "users/forgot-password/change_password", to: "users#change_password"
+  post "users/forgot-password/change-password", to: "users#change_password"
 
 
 end

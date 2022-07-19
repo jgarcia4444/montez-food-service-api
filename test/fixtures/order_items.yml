@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  upc: MyString
+  item: MyString
+  description: MyString
+  dept: 1
+  price: 1.5
+  cost_per_unit: 1.5
+  case_cost: 1.5
+  five_case_cost: 1.5
+
+two:
+  upc: MyString
+  item: MyString
+  description: MyString
+  dept: 1
+  price: 1.5
+  cost_per_unit: 1.5
+  case_cost: 1.5
+  five_case_cost: 1.5
