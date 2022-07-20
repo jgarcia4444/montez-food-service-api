@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
 
     def create
-        puts "CREATE ACTION TRIGGERED."
-        puts params
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
@@ -14,7 +12,6 @@ class UsersController < ApplicationController
                     }
                 }
             else
-                puts "INVALID USER!!!"
                 render :json => {
                     success: false,
                     error: {
@@ -24,7 +21,6 @@ class UsersController < ApplicationController
                 }
             end
         else
-            puts "USER INFO SENT INCORRECTLY!!"
             render :json => {
                 success: false,
                 error: {
@@ -45,7 +41,6 @@ class UsersController < ApplicationController
                 user_to_send_code = User.find_by(email: email)
                 if user_to_send_code
                     user_to_send_code.create_ota_code
-                    puts "User Validity! #{user_to_send_code.valid?}"
                     if user_to_send_code.valid?
                         begin
                             UserNotifierMailer.send_code(user_to_send_code).deliver_now
@@ -112,7 +107,7 @@ class UsersController < ApplicationController
                                 success: true,
                                 userInfo: {
                                     email: check_code_user.email,
-                                    otaCode: check_code_user.ota_code
+                                    otaCode: check_code_user.ota_code,
                                 },
                             }
                         else
