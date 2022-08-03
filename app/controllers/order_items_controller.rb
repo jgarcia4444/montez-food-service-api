@@ -31,6 +31,8 @@ class OrderItemsController < ApplicationController
         end
     end
 
+    
+
     private
     def format_order_item(order_item)
         {
