@@ -14,4 +14,8 @@ class User < ApplicationRecord
         self.update(ota_code: ota_string)
     end
 
+    def self.find_by_email(user_email)
+        User.find_by(email: user_email)
+    end
+
 end
