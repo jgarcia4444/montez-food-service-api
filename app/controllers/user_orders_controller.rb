@@ -11,7 +11,18 @@ class UserOrdersController < ApplicationController
                         items = order_info[:items]
                         user = User.find_by_email(user_email)
                         if user
-                            
+                            user_order = user.create_user_order(items)
+                            orders_persisted = user_order.persist_ordered_items(items)
+                            if orders_persisted
+                                
+                            else 
+                                render :json => {
+                                    success: false,
+                                    error: {
+                                        message: "There was an error while persisting ordered items."
+                                    }
+                                }
+                            end
                         else
                             render :json => {
                                 success: false,
