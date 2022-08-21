@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>Order Confirmation</h1>
+        <h4>Your order has been received.</h4>
+        <hr />
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+            </tr>
+            <% @order_info.items.each do |item| %>
+                <tr>
+                    <td><%= item.description %></td>
+                    <td><%= item.quantity %></td>
+                    <td>$<%= item.price %></td>
+                    <td>$<%= (item.price * item.quantity) %></td>
+                </tr>
+            <% end %>
+        </table>
+        <p>We will send an email stating when you are to expect the deliver of your ordered items.</p>
+    </body>
+</html>
