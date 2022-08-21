@@ -14,7 +14,14 @@ class UserOrdersController < ApplicationController
                             user_order = user.create_user_order(items)
                             orders_persisted = user_order.persist_ordered_items(items)
                             if orders_persisted
-                                
+                                render :json => {
+                                    success: true,
+                                    pastOrder: {
+                                        totalPrice: user_order.total_price,
+                                        items: items,
+                                        orderDate: user_order.created_at
+                                    }
+                                }
                             else 
                                 render :json => {
                                     success: false,
