@@ -14,14 +14,26 @@ class UserOrdersController < ApplicationController
                             user_order = user.create_user_order(items)
                             orders_persisted = user_order.persist_ordered_items(items)
                             if orders_persisted
-                                render :json => {
-                                    success: true,
-                                    pastOrder: {
-                                        totalPrice: user_order.total_price,
-                                        items: items,
-                                        orderDate: user_order.created_at
-                                    }
+                                # Send Confirmation Email
+                                past_order_info = {
+                                    totalPrice: user_order.total_price,
+                                    items: items,
+                                    orderDate: user_order.created_at
                                 }
+                                begin 
+                                    UserNotifierMailer.send_order_confirmation(past_order_info, user_email)
+                                    render :json => {
+                                        success: true,
+                                        pastOrder: past_order_info
+                                    }
+                                rescue StandardError => e
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "There was an error sending the order confirmation email",
+                                            specificError: e.inspect
+                                        }
+                                    }
                             else 
                                 render :json => {
                                     success: false,
