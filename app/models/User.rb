@@ -21,8 +21,8 @@ class User < ApplicationRecord
     def create_user_order(items)
         sum_total = 0.00
         items.each do |item|
-            item_price = item.price.to_f
-            quantity = item.quantity.to_i
+            item_price = item["price"].to_f
+            quantity = item["quantity"].to_i
             item_total = quantity * item_price
             sum_total += item_total
         end
