@@ -37,6 +37,7 @@ class UserOrdersController < ApplicationController
                                         }
                                     }
                                 end
+                                # "#<ActionView::Template::Error: undefined method `items' for #<Hash:0x00007fd1edefa530>>"
                             else 
                                 render :json => {
                                     success: false,

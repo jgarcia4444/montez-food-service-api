@@ -13,20 +13,23 @@
                 <th>Price</th>
                 <th>Total Price</th>
             </tr>
-            <% @order_info.items.each do |item| %>
+            <% @order_info[:items].as_json.each do |item| %>
+                <% 
+                    item_total_price = item["price"] * item["quantity"].to_f
+                %>
                 <tr>
-                    <td><%= item.description %></td>
-                    <td><%= item.quantity %></td>
-                    <td>$<%= item.price %></td>
-                    <td>$<%= (item.price * item.quantity) %></td>
+                    <td><%= item["description"] %></td>
+                    <td><%= item["quantity"] %></td>
+                    <td>$<%= item["price"] %></td>
+                    <td>$<%= item_total_price %></td>
                 </tr>
             <% end %>
             <tr>
                 <td colspan="3"><strong>Total Price</strong></td>
-                <td>$<%= @order_info.totalPrice %></td>
+                <td>$<%= @order_info[:totalPrice] %></td>
             </tr>
         </table>
-        <h4>Order Date: <%= @order_info.orderDate %></h4>
+        <h4>Order Date: <%= @order_info[:orderDate] %></h4>
         <p>We will send an email stating when you are to expect the deliver of your ordered items.</p>
     </body>
 </html>

@@ -10,7 +10,7 @@ class UserOrder < ApplicationRecord
                 render :json => {
                     success: false,
                     error: {
-                        message: "There was an error persisting and order item as and ordered item."
+                        message: "There was an error persisting an order item as and ordered item."
                     }
                 }
             end
