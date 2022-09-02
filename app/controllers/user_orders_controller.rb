@@ -21,9 +21,7 @@ class UserOrdersController < ApplicationController
                                     orderDate: user_order.created_at
                                 }
                                 begin 
-                                    puts "User order confirmation sending"
                                     UserNotifierMailer.send_order_confirmation(past_order_info, user_email).deliver_now
-                                    puts "User order confirmation sent"
                                     render :json => {
                                         success: true,
                                         pastOrder: past_order_info
@@ -37,7 +35,6 @@ class UserOrdersController < ApplicationController
                                         }
                                     }
                                 end
-                                # "#<ActionView::Template::Error: undefined method `items' for #<Hash:0x00007fd1edefa530>>"
                             else 
                                 render :json => {
                                     success: false,

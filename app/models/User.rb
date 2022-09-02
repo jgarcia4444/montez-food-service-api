@@ -4,6 +4,8 @@ class User < ApplicationRecord
     validates :company_name, presence: true
     validates :email, uniqueness: true
     validates :company_name, uniqueness: true
+    has_many :user_orders
+    has_many :ordered_items, through: :user_orders
 
     def create_ota_code
         ota_string = ""
@@ -37,6 +39,32 @@ class User < ApplicationRecord
                 }
             }
         end
+    end
+
+    def past_orders 
+        user_orders = self.user_orders
+        ordered_items = self.ordered_items
+        # Object that should be sent as an array of objects
+        # past_order_info = {
+        #     totalPrice: user_order.total_price,
+        #     items: items,
+        #     orderDate: user_order.created_at
+        # };
+        # Order Item
+        # {
+        #     description: order_item.description,
+        #     upc: order_item.upc,
+        #     item: order_item.item,
+        #     price: order_item.price,
+        #     costPerUnit: order_item.cost_per_unit,
+        #     caseCost: order_item.case_cost,
+        #     fiveCaseCost: order_item.five_case_cost,
+        # }
+
+        past_orders = user_orders.map do |user_order|
+            partitioned
+        end
+
     end
 
 
