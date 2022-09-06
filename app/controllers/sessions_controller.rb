@@ -12,11 +12,15 @@ class SessionsController < ApplicationController
                         authenticated_user = user.authenticate(password)
                         if authenticated_user
                             users_past_orders = authenticated_user.past_orders
+                            puts "USER_PAST_ORDERS------"
+                            puts users_past_orders
+                            user_past_orders = users_past_orders.count > 0 ? users_past_orders : []
                             render :json => {
                                 success: true,
                                 userInfo: {
                                     email: authenticated_user.email,
-                                    companyName: authenticated_user.company_name
+                                    companyName: authenticated_user.company_name,
+                                    pastOrders: user_past_orders,
                                 }
                             }
                         else
