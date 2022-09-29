@@ -18,5 +18,4 @@ class UserOrder < ApplicationRecord
         end
         true
     end
-
 end
