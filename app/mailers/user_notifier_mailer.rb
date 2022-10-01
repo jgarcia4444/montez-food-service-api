@@ -12,4 +12,10 @@ class UserNotifierMailer < ApplicationMailer
         mail to: user_email, subject: "Order Confirmation"
     end
 
+    def send_account_verification(user_info)
+        @email = user_info.email
+        @user_id = user_info.id
+        mail to: @email, subject: "Account Verification"
+    end
+
 end
