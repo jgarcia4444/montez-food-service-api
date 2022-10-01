@@ -4,6 +4,8 @@ class UsersController < ApplicationController
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
+                # if the new user is created properly then they should be sent a verification email.
+                
                 render :json => {
                     success: true,
                     userInfo: {
