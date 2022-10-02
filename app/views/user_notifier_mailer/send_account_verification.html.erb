@@ -7,5 +7,7 @@
         <h4>Your account has been successfully created, please follow the instructions below to verify and activate your account.</h4>
         <hr />
         <h2>Account Email: <%= @email %></h2>
+        <p>Click below to verify your account.</p>
+        <%= link_to "Click Here To Verify Your Account", @verification_url, target: :_blank %>
     </body>
 </html>
