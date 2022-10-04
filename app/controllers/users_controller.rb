@@ -4,13 +4,14 @@ class UsersController < ApplicationController
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
-                # if the new user is created properly then they should be sent a verification email.
                 begin
                     UserNotifierMailer.send_account_verification(new_user).deliver_now
+                    # Change below to only send a success message or a marker to send the user to the page ushering them to verify their account.
                     render :json => {
                         success: true,
                         userInfo: {
-                            email: user_to_send_code.email
+                            email: new_user.email,
+                            isMidOrder: new_user.is_ordering,
                         }
                     }
                 rescue StandardError => e
