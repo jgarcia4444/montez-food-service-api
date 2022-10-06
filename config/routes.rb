@@ -15,6 +15,6 @@ Rails.application.routes.draw do
   get 'order-online/fetch-suggestions/:item_query', to: "order_items#fetch_suggestions"
 
   post 'order-online/orders', to: "user_orders#persist_order"
-  post 'users/verify/', to: "users#verify_user"
+  post 'users/verify', to: "users#verify_user"
 
 end

@@ -10,7 +10,7 @@ class UsersController < ApplicationController
                     if user.verified == false
                         user.update(verified: true)
                         if user.valid?
-                            render :json {
+                            render :json => {
                                 success: true,
                                 userInfo: {
                                     email: user.email,
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
                         render :json => {
                             success: false,
                             error: {
-                                messsage: "User has already verified their account and can log in."
+                                message: "User has already verified their account and can log in."
                             }
                         }
                     end
