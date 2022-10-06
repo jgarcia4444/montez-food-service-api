@@ -14,7 +14,7 @@ class UserNotifierMailer < ApplicationMailer
 
     def send_account_verification(user_info)
         @email = user_info.email
-        @verification_url = "http://127.0.0.1:3000/users/verify/#{user_info.id}"
+        @verification_url = "http://localhost:3001/users/account/verifying/#{user_info.email}"
         mail to: @email, subject: "Account Verification"
     end
 

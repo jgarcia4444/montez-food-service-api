@@ -1,17 +1,76 @@
 class UsersController < ApplicationController
 
+    def verify_user
+        if params[:user_info]
+            user_info = params[:user_info]
+            if user_info[:email]
+                email = user_info[:email]
+                user = User.find_by(email: email)
+                if user
+                    if user.verified == false
+                        user.update(verified: true)
+                        if user.valid?
+                            render :json {
+                                success: true,
+                                userInfo: {
+                                    email: user.email,
+                                    companyName: user.company_name,
+                                    isOrdering: user.is_ordering
+                                }
+                            }
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "There was an error verifying your account, please attempt again."
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                messsage: "User has already verified their account and can log in."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "No user was found with the given user email."
+                        }
+                    }
+                end
+
+            else 
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "An email must be provided in order to verify the user."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "User information must be formatted and sent to back end properly."
+                }
+            }
+        end
+    end
+
     def create
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
                 begin
                     UserNotifierMailer.send_account_verification(new_user).deliver_now
-                    # Change below to only send a success message or a marker to send the user to the page ushering them to verify their account.
                     render :json => {
                         success: true,
                         userInfo: {
                             email: new_user.email,
-                            isMidOrder: new_user.is_ordering,
                         }
                     }
                 rescue StandardError => e
