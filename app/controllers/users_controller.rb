@@ -10,6 +10,7 @@ class UsersController < ApplicationController
                     if user.verified == false
                         user.update(verified: true)
                         if user.valid?
+                            latest_cart_setup = user.get_latest_cart_setup
                             render :json => {
                                 success: true,
                                 userInfo: {
@@ -17,6 +18,8 @@ class UsersController < ApplicationController
                                     companyName: user.company_name,
                                     isOrdering: user.is_ordering
                                 }
+                                # also send cart info if there is any send an empty object if not.
+
                             }
                         else
                             render :json => {

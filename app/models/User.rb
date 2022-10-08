@@ -6,6 +6,7 @@ class User < ApplicationRecord
     validates :company_name, uniqueness: true
     has_many :user_orders
     has_many :ordered_items, through: :user_orders
+    has_many :temp_carts, dependent: :destroy
 
     def create_ota_code
         ota_string = ""
@@ -91,8 +92,6 @@ class User < ApplicationRecord
                     quantity: nil,
                     itemInfo: nil,
                 }
-                # puts "here is the order item:"
-                # puts order_item
                 if order_item
                     info_to_format[:quantity] = specific_ordered_item.quantity
                     info_to_format[:item_info] = order_item
@@ -112,5 +111,49 @@ class User < ApplicationRecord
         user_past_orders.count > 0 ? user_past_orders : []
     end
 
+    def calc_total_price(order_item)
+        price = order_item.price
+        quantity = order_item.quantity
+        product = (price * quantity).round(2)
+        return product
+    end
+
+    def get_latest_cart_setup
+        if self.temp_carts.count > 0
+            latest_cart_setup = self.temp_carts.order('created_at DESC').first
+            if latest_cart_setup.created_at >= 1.day.ago && datetime <= Time.now
+                temp_cart_items = latest_cart_setup.temp_cart_items
+                if temp_cart_items.count > 0
+                    order_items = temp_cart_items.map do |temp_cart_item|
+                        order_item = OrderItem.find_by(id: temp_cart_item.order_item_id)
+                        if order_item
+                            total_price = calc_total_price(order_item)
+                            {
+                                caseCost: order_item.case_cost,
+                                costPerUnit: order_item.cost_per_unit,
+                                description: order_item.description,
+                                fiveCaseCost: order_item.five_case_cost,
+                                item: order_item.item,
+                                price: order_item.price,
+                                quantity: temp_cart_item.quantity,
+                                totalPrice: total_price
+                            }
+                        else
+                            {}
+                        end
+                    end
+                    {
+                        items: order_items,
+                    }
+                else
+                    {}
+                end
+            else
+                {}
+            end
+        else
+            {}
+        end
+    end
 
 end
