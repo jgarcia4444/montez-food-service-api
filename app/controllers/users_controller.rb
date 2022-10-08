@@ -18,8 +18,7 @@ class UsersController < ApplicationController
                                     companyName: user.company_name,
                                     isOrdering: user.is_ordering
                                 }
-                                # also send cart info if there is any send an empty object if not.
-
+                                latestCartInfo: latest_cart_setup,
                             }
                         else
                             render :json => {
@@ -68,6 +67,10 @@ class UsersController < ApplicationController
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
+                if params[:user_info][:cart_info].count > 0
+                    cart_info = params[:user_info][:cart_info]
+                    new_user.persist_temp_cart(cart_info)
+                end
                 begin
                     UserNotifierMailer.send_account_verification(new_user).deliver_now
                     render :json => {

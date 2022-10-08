@@ -156,4 +156,35 @@ class User < ApplicationRecord
         end
     end
 
+    def persist_temp_cart(cart_info)
+        temp_cart = TempCart.create(user_id: self.id)
+        if temp_cart.valid?
+            total_price = 0.00
+            cart_info.each do |cart_item|
+                total_price += cart_item.quantity.to_i * cart_item.price
+                cart_item_id = OrderItem.find_by(description: cart_item.description).id
+                temp_cart_item = TempCartItem.create(
+                    temp_cart_id: temp_cart.id,
+                    quantity: cart_item.quantity.to_i,
+                    order_item_id: cart_item_id,
+                )
+                if !temp_cart.valid?
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "There was an error persisting a temp cart item."
+                        }
+                    }
+                end
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "There was an error persisting the temporary cart."
+                }
+            }
+        end
+    end
+
 end
