@@ -111,23 +111,23 @@ class User < ApplicationRecord
         user_past_orders.count > 0 ? user_past_orders : []
     end
 
-    def calc_total_price(order_item)
+    def calc_item_total_price(order_item, quantity)
         price = order_item.price
-        quantity = order_item.quantity
-        product = (price * quantity).round(2)
+        product = (price * quantity.to_i).round(2)
         return product
     end
 
     def get_latest_cart_setup
         if self.temp_carts.count > 0
             latest_cart_setup = self.temp_carts.order('created_at DESC').first
-            if latest_cart_setup.created_at >= 1.day.ago && datetime <= Time.now
+            puts "Here is the latest cart setup #{latest_cart_setup}"
+            if latest_cart_setup.created_at >= 1.day.ago && latest_cart_setup.created_at <= Time.now
                 temp_cart_items = latest_cart_setup.temp_cart_items
                 if temp_cart_items.count > 0
                     order_items = temp_cart_items.map do |temp_cart_item|
                         order_item = OrderItem.find_by(id: temp_cart_item.order_item_id)
                         if order_item
-                            total_price = calc_total_price(order_item)
+                            total_price = calc_item_total_price(order_item, temp_cart_item.quantity)
                             {
                                 caseCost: order_item.case_cost,
                                 costPerUnit: order_item.cost_per_unit,
@@ -146,26 +146,38 @@ class User < ApplicationRecord
                         items: order_items,
                     }
                 else
+                    puts "Empty object being passed because there are no temp cart items"
                     {}
                 end
             else
+                puts "Empty object being passed because the latest cart is past 24 hours old."
                 {}
             end
         else
+            puts "Empty object being passed because there are no temp carts."
             {}
         end
     end
 
+    def calc_total_price(cart_info)
+        puts "Cart Info from calc_total_price #{cart_info}"
+        total = 0.0
+        cart_info.as_json.each do |cart_item|
+            puts "Here is the cart_item #{cart_item}"
+            total += cart_item["quantity"].to_f * cart_item["price"].to_f
+        end
+        total
+    end
+
     def persist_temp_cart(cart_info)
-        temp_cart = TempCart.create(user_id: self.id)
-        if temp_cart.valid?
-            total_price = 0.00
+        total_price = calc_total_price(cart_info)
+        temp_cart = TempCart.create(user_id: self.id, total_price: total_price)
+        if temp_cart
             cart_info.each do |cart_item|
-                total_price += cart_item.quantity.to_i * cart_item.price
-                cart_item_id = OrderItem.find_by(description: cart_item.description).id
+                cart_item_id = OrderItem.find_by(description: cart_item[:description]).id
                 temp_cart_item = TempCartItem.create(
                     temp_cart_id: temp_cart.id,
-                    quantity: cart_item.quantity.to_i,
+                    quantity: cart_item[:quantity].to_i,
                     order_item_id: cart_item_id,
                 )
                 if !temp_cart.valid?

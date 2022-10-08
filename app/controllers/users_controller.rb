@@ -17,7 +17,7 @@ class UsersController < ApplicationController
                                     email: user.email,
                                     companyName: user.company_name,
                                     isOrdering: user.is_ordering
-                                }
+                                },
                                 latestCartInfo: latest_cart_setup,
                             }
                         else
@@ -67,8 +67,9 @@ class UsersController < ApplicationController
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
-                if params[:user_info][:cart_info].count > 0
-                    cart_info = params[:user_info][:cart_info]
+                if params[:cart_info]
+                    puts "cart info was found"
+                    cart_info = params[:cart_info]
                     new_user.persist_temp_cart(cart_info)
                 end
                 begin
@@ -309,7 +310,7 @@ class UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user_info).permit(:email, :password, :company_name)
+        params.require(:user_info).permit(:email, :password, :company_name, :is_ordering)
     end
 
 end
