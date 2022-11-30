@@ -7,6 +7,7 @@ class User < ApplicationRecord
     has_many :user_orders
     has_many :ordered_items, through: :user_orders
     has_many :temp_carts, dependent: :destroy
+    has_many :addresses, dependent: :destory
 
     def create_ota_code
         ota_string = ""
