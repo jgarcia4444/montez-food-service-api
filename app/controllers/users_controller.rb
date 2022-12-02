@@ -67,7 +67,25 @@ class UsersController < ApplicationController
         if params[:user_info]
             new_user = User.create(user_params)
             if params[:user_info][:address_info]
-                # Create address and link to the user.
+                address_info = params[:user_info][:address_info]
+                users_address = Address.create(
+                    number: address_info[:number],
+                    street_name: address_info[:street_name],
+                    city: address_info[:city],
+                    state: address_info[:state],
+                    zip_code: address_info[:zip_code],
+                    user_id: address_info[:user_id],
+                )
+                if users_address.valid?
+                    new_user.update(address_id: users_address.id)
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "There was an error saving your address information."
+                        }
+                    }
+                end
             else
                 render :json => {
                     success: false,
