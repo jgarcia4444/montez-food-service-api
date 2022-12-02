@@ -66,6 +66,16 @@ class UsersController < ApplicationController
     def create
         if params[:user_info]
             new_user = User.create(user_params)
+            if params[:user_info][:address_info]
+                # Create address and link to the user.
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "An address is needed so that the products can be delivered to the proper location.",
+                    }
+                }
+            end
             if new_user.valid?
                 if params[:cart_info]
                     puts "cart info was found"
@@ -310,7 +320,7 @@ class UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user_info).permit(:email, :password, :company_name, :is_ordering)
+        params.require(:user_info).permit(:email, :password, :company_name, :is_ordering, :first_name, :last_name, :phone_number)
     end
 
 end
