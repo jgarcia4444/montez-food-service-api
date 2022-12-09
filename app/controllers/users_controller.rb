@@ -96,7 +96,6 @@ class UsersController < ApplicationController
             end
             if new_user.valid?
                 if params[:cart_info]
-                    puts "cart info was found"
                     cart_info = params[:cart_info]
                     new_user.persist_temp_cart(cart_info)
                 end

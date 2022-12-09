@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
     def login
-        puts "LOGIN ACTION TRIGGERED"
         if params[:user_info]
             user_info = params[:user_info]
             if user_info[:email]

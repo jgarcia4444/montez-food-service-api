@@ -7,7 +7,7 @@ class User < ApplicationRecord
     has_many :user_orders
     has_many :ordered_items, through: :user_orders
     has_many :temp_carts, dependent: :destroy
-    has_many :addresses, dependent: :destory
+    has_many :addresses, dependent: :destroy
 
     def create_ota_code
         ota_string = ""
@@ -171,32 +171,34 @@ class User < ApplicationRecord
     end
 
     def persist_temp_cart(cart_info)
-        total_price = calc_total_price(cart_info)
-        temp_cart = TempCart.create(user_id: self.id, total_price: total_price)
-        if temp_cart
-            cart_info.each do |cart_item|
-                cart_item_id = OrderItem.find_by(description: cart_item[:description]).id
-                temp_cart_item = TempCartItem.create(
-                    temp_cart_id: temp_cart.id,
-                    quantity: cart_item[:quantity].to_i,
-                    order_item_id: cart_item_id,
-                )
-                if !temp_cart.valid?
-                    render :json => {
-                        success: false,
-                        error: {
-                            message: "There was an error persisting a temp cart item."
+        if cart_info.count > 0
+            total_price = calc_total_price(cart_info)
+            temp_cart = TempCart.create(user_id: self.id, total_price: total_price)
+            if temp_cart
+                cart_info.each do |cart_item|
+                    cart_item_id = OrderItem.find_by(description: cart_item[:description]).id
+                    temp_cart_item = TempCartItem.create(
+                        temp_cart_id: temp_cart.id,
+                        quantity: cart_item[:quantity].to_i,
+                        order_item_id: cart_item_id,
+                    )
+                    if !temp_cart.valid?
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "There was an error persisting a temp cart item."
+                            }
                         }
-                    }
+                    end
                 end
-            end
-        else
-            render :json => {
-                success: false,
-                error: {
-                    message: "There was an error persisting the temporary cart."
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "There was an error persisting the temporary cart."
+                    }
                 }
-            }
+            end
         end
     end
 
