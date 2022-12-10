@@ -66,34 +66,6 @@ class UsersController < ApplicationController
     def create
         if params[:user_info]
             new_user = User.create(user_params)
-            if params[:user_info][:address_info]
-                address_info = params[:user_info][:address_info]
-                users_address = Address.create(
-                    number: address_info[:number],
-                    street_name: address_info[:street_name],
-                    city: address_info[:city],
-                    state: address_info[:state],
-                    zip_code: address_info[:zip_code],
-                    user_id: address_info[:user_id],
-                )
-                if users_address.valid?
-                    new_user.update(address_id: users_address.id)
-                else
-                    render :json => {
-                        success: false,
-                        error: {
-                            message: "There was an error saving your address information."
-                        }
-                    }
-                end
-            else
-                render :json => {
-                    success: false,
-                    error: {
-                        message: "An address is needed so that the products can be delivered to the proper location.",
-                    }
-                }
-            end
             if new_user.valid?
                 if params[:cart_info]
                     cart_info = params[:cart_info]
@@ -101,6 +73,7 @@ class UsersController < ApplicationController
                 end
                 begin
                     UserNotifierMailer.send_account_verification(new_user).deliver_now
+                    puts "Before rendering back the users data after a successful Verification email sent."
                     render :json => {
                         success: true,
                         userInfo: {
