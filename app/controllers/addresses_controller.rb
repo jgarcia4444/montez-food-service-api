@@ -1,16 +1,16 @@
 
 class AddressesController < ApplicationController
     def create
-        if params[:user_id]
-            user_id = params[:user_id]
-            user = User.find_by(id: user_id)
+        if params[:email]
+            email = params[:email]
+            user = User.find_by(email: email)
             if user
                 if user.verified == true
                     if params[:address_info]
                         address_info = params[:address_info]
                         address = Address.new
                         address_info.each {|key, value| address[key] = value}
-                        address.user_id = user_id
+                        address.user_id = user.id
                         address.save
                         if address.valid?
                             usersAddress = address.format_for_frontend

@@ -16,6 +16,8 @@ class OrderItemsController < ApplicationController
                 end
             end
             if suggestions.count > 0
+                puts suggestions.count
+                puts suggestions
                 render :json => {
                     success: true,
                     suggestions: suggestions,
