@@ -206,7 +206,12 @@ class User < ApplicationRecord
         user_addresses = []
         Address.all.each do |address|
             if address.user_id == self.id
-                user_addresses.append(address)
+                user_addresses.append({
+                    street: address.street,
+                    city: address.city,
+                    state: address.state,
+                    zipCode: address.zip_code
+                })
             end
         end
         user_addresses
