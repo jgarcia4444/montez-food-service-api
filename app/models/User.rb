@@ -202,4 +202,14 @@ class User < ApplicationRecord
         end
     end
 
+    def get_user_locations 
+        user_addresses = []
+        Address.all.each do |address|
+            if address.user_id == self.id
+                user_addresses.append(address)
+            end
+        end
+        user_addresses
+    end
+
 end

@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
                             if authenticated_user.verified == true
                                 users_past_orders = authenticated_user.past_orders
                                 user_past_orders = users_past_orders.count > 0 ? users_past_orders : []
+                                user_locations = authenticated_user.get_user_locations
                                 render :json => {
                                     success: true,
                                     userInfo: {
