@@ -20,6 +20,7 @@ class SessionsController < ApplicationController
                                         email: authenticated_user.email,
                                         companyName: authenticated_user.company_name,
                                         pastOrders: user_past_orders,
+                                        locations: user_locations
                                     }
                                 }
                             else
