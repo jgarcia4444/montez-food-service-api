@@ -18,6 +18,6 @@ Rails.application.routes.draw do
   post 'users/verify', to: "users#verify_user"
   post 'addresses/:email', to: "addresses#create"
 
-  destroy 'users/:email/addresses/:address_id', to: "addresses#destroy"
+  delete 'users/:email/addresses/:address_id', to: "addresses#destroy"
 
 end

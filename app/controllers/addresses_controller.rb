@@ -63,7 +63,7 @@ class AddressesController < ApplicationController
     def destroy
         if params[:email]
             email = params[:email]
-            user = User.find_by(email: email)
+            user = User.find_by(email: "#{email}.com")
             if user 
                 if params[:address_id]
                     address_id = params[:address_id]
@@ -93,13 +93,6 @@ class AddressesController < ApplicationController
                             success: false,
                             error: {
                                 message: "The location either does not belong to this user or it was not found with the given id."
-                            }
-                        }
-                    else 
-                        render :json => {
-                            success: false,
-                            error: {
-                                message: "No address was found with the given id"
                             }
                         }
                     end
