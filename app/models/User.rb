@@ -210,7 +210,8 @@ class User < ApplicationRecord
                     street: address.street,
                     city: address.city,
                     state: address.state,
-                    zipCode: address.zip_code
+                    zipCode: address.zip_code,
+                    id: address.id,
                 })
             end
         end

@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
   post 'order-online/orders', to: "user_orders#persist_order"
   post 'users/verify', to: "users#verify_user"
-  post 'addresses/:user_id', to: "addresses#create"
+  post 'addresses/:email', to: "addresses#create"
+
+  destroy 'users/:email/addresses/:address_id', to: "addresses#destroy"
 
 end

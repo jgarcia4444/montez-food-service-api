@@ -3,8 +3,7 @@ class Address < ApplicationRecord
     
     def format_for_frontend
         {
-            number: self.number,
-            streetName: self.street_name,
+            street: self.street,
             city: self.city,
             state: self.state,
             zipCode: self.zip_code,
