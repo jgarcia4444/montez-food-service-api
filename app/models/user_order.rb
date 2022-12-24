@@ -1,6 +1,7 @@
 class UserOrder < ApplicationRecord
     has_many :ordered_items
     belongs_to :user
+    has_one :address
 
     def persist_ordered_items(items)
         items.each do |item|
