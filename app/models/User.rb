@@ -22,7 +22,9 @@ class User < ApplicationRecord
         User.find_by(email: user_email)
     end
 
-    def create_user_order(items)
+    def create_user_order(order_info)
+        items = order_info.items
+        address_id = order_info.address_id
         sum_total = 0.00
         items.each do |item|
             item_price = item["price"].to_f
@@ -30,7 +32,7 @@ class User < ApplicationRecord
             item_total = quantity * item_price
             sum_total += item_total
         end
-        user_order = UserOrder.create(user_id: self.id, total_price: sum_total)
+        user_order = UserOrder.create(user_id: self.id, total_price: sum_total, address_id: address_id)
         if user_order.valid?
             user_order
         else
