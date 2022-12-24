@@ -21,10 +21,10 @@ class User < ApplicationRecord
     def self.find_by_email(user_email)
         User.find_by(email: user_email)
     end
-
+#
     def create_user_order(order_info)
-        items = order_info.items
-        address_id = order_info.address_id
+        items = order_info[:items]
+        address_id = order_info[:address_id]
         sum_total = 0.00
         items.each do |item|
             item_price = item["price"].to_f
