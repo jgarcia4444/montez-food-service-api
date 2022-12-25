@@ -83,14 +83,14 @@ class User < ApplicationRecord
         user_past_orders = user_orders.map do |user_order|
             specific_ordered_items = ordered_items.select {|ordered_item| ordered_item.user_order_id == user_order.id}
             past_order_address = Address.find_by(id: user_order.address_id)
-            if !past_order_address
-                render :json => {
-                    success: false,
-                    error: {
-                        message: "No location is associated with this order."
-                    }
-                }
-            end
+            # if !past_order_address
+            #     render :json => {
+            #         success: false,
+            #         error: {
+            #             message: "No location is associated with this order."
+            #         }
+            #     }
+            # end
             order_address = {
                 street: past_order_address.street,
                 city: past_order_address.city,

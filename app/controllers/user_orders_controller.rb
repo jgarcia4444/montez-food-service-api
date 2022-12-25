@@ -22,7 +22,7 @@ class UserOrdersController < ApplicationController
                                 orders_persisted = user_order.persist_ordered_items(items)
                                 if orders_persisted
                                     # Send Confirmation Email
-                                    address = Address.find_by(id: user_order.address_id)
+                                    address = Address.find_by(id: user_order[:address_id])
                                     past_order_info = {
                                         totalPrice: user_order.total_price,
                                         items: items,
