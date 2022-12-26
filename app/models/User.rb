@@ -83,14 +83,6 @@ class User < ApplicationRecord
         user_past_orders = user_orders.map do |user_order|
             specific_ordered_items = ordered_items.select {|ordered_item| ordered_item.user_order_id == user_order.id}
             past_order_address = Address.find_by(id: user_order.address_id)
-            # if !past_order_address
-            #     render :json => {
-            #         success: false,
-            #         error: {
-            #             message: "No location is associated with this order."
-            #         }
-            #     }
-            # end
             order_address = {
                 street: past_order_address.street,
                 city: past_order_address.city,
@@ -103,8 +95,6 @@ class User < ApplicationRecord
                 orderAddress: order_address,
             }
             specific_items = specific_ordered_items.map do |specific_ordered_item|
-                puts "SPECIFIC ORDERED ITEM:"
-                puts specific_ordered_item
                 order_item = OrderItem.find_by(id: specific_ordered_item.order_item_id)
                 formatted_item = {}
                 info_to_format = {
@@ -139,7 +129,6 @@ class User < ApplicationRecord
     def get_latest_cart_setup
         if self.temp_carts.count > 0
             latest_cart_setup = self.temp_carts.order('created_at DESC').first
-            puts "Here is the latest cart setup #{latest_cart_setup}"
             if latest_cart_setup.created_at >= 1.day.ago && latest_cart_setup.created_at <= Time.now
                 temp_cart_items = latest_cart_setup.temp_cart_items
                 if temp_cart_items.count > 0
@@ -179,10 +168,8 @@ class User < ApplicationRecord
     end
 
     def calc_total_price(cart_info)
-        puts "Cart Info from calc_total_price #{cart_info}"
         total = 0.0
         cart_info.as_json.each do |cart_item|
-            puts "Here is the cart_item #{cart_item}"
             total += cart_item["quantity"].to_f * cart_item["price"].to_f
         end
         total
