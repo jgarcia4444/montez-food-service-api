@@ -20,4 +20,6 @@ Rails.application.routes.draw do
 
   delete 'users/:email/addresses/:address_id', to: "addresses#destroy"
 
+  post "users/admin/login", to: "admins#login"
+
 end
