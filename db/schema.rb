@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_24_015839) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_26_190926) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_24_015839) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "street", default: ""
+  end
+
+  create_table "admins", force: :cascade do |t|
+    t.string "username"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -41,6 +48,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_24_015839) do
     t.integer "user_order_id"
     t.integer "quantity"
     t.integer "order_item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "pending_orders", force: :cascade do |t|
+    t.integer "user_order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
