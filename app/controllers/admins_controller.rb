@@ -62,4 +62,26 @@ class AdminsController < ApplicationController
             }
         end
     end
+
+    def pending_orders_index
+        pending_orders = PendingOrder.all
+        if pending_orders.count > 0
+            pending_user_orders = []
+            pending_orders.each do |pending_order|
+                order_id = pending_order.user_order_id
+                user_order = UserOrder.find_by(id: order_id)
+                pending_user_orders.append(user_order)
+                render :json => {
+                    success: true,
+                    pendingOrders: pending_user_orders,
+                }
+            end
+        else 
+            render :json => {
+                success: true,
+                pendingOrders: []
+            }
+        end
+    end
+
 end
