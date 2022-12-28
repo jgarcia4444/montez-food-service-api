@@ -24,5 +24,6 @@ Rails.application.routes.draw do
 
   get "pending-orders", to: "admins#pending_orders_index"
   get "users/admin/pending-order/:order_id", to: "admins#pending_order_show"
+  post "users/admin/confirm-order", to: "admins#confirm_pending_order"
 
 end

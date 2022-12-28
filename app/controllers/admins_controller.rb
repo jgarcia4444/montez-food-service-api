@@ -110,7 +110,8 @@ class AdminsController < ApplicationController
                             createdAt: user_order.created_at,
                             deliveryAddress: formattedAddress,
                             totalPrice: user_order.total_price,
-                            items: user_order.get_order_items
+                            items: user_order.get_order_items,
+                            orderId: user_order.id
                         }
                     }
                 else 
@@ -134,6 +135,113 @@ class AdminsController < ApplicationController
                 success: false,
                 error: {
                     message: "No order id was sent to find order information."
+                }
+            }
+        end
+    end
+
+    def confirm_pending_order 
+        if params[:confirmation_information]
+            confirmation_information = params[:confirmation_information]
+            if confirmation_information[:delivery_date]
+                delivery_date = confirmation_information[:delivery_date]
+                if confirmation_information[:invoice_payable_date]
+                    invoice_payable_date = confirmation_information[:invoice_payable_date]
+                    if confirmation_information[:order_id]
+                        order_id = confirmation_information[:order_id]
+                        pending_order = PendingOrder.find_by(user_order_id: order_id)
+                        if pending_order
+                            if pending_order.destroy
+                                user_order = UserOrder.find_by(id: order_id)
+                                if user_order
+                                    order_address = Address.find_by(id: user_order.address_id)
+                                    if order_address
+                                        formatted_address = order_address.format_address
+                                        user_order_items = user_order.get_order_items
+                                        begin
+                                            order_info = {
+                                                delivery_date: delivery_date,
+                                                invoice_payable_date: invoice_payable_date,
+                                                total_price: user_order.total_price,
+                                                address: formatted_address,
+                                                items: user_order_items
+                                            }
+                                            UserNotifierMailer.pending_order_confirmation(order_info)
+                                            render :json => {
+                                                success: true,
+                                                pendingOrderId: pending_order.id,
+                                            }
+                                        rescue StandardError => e
+                                            render :json => {
+                                                success: false,
+                                                error: {
+                                                    message: "There was an error sending the confirmation email.",
+                                                    specificError: e.inspect
+                                                }
+                                            }
+                                        end
+                                    else
+                                        render :json => {
+                                            success: false,
+                                            error: {
+                                                message: "There was an error finding the associated address with the user order."
+                                            }
+                                        }
+                                    end
+                                else
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "There was an error finding the user order with the given id."
+                                        }
+                                    }
+                                end
+                                
+                            else
+                                render :json => {
+                                    success: false,
+                                    error: {
+                                        message: "There was an error attempting to delete the pending order."
+                                    }
+                                }
+                            end
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "There was an error finding the pending order with the given information."
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "No order id was sent to confirm the pending order."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "No invoice payable date was sent to confirm the pending order."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "No delivery date information was sent to confirm the pending order."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "Information was not sent properly to confirm a pending order."
                 }
             }
         end

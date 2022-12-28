@@ -13,6 +13,10 @@ class UserNotifierMailer < ApplicationMailer
         mail to: user_email, subject: "Order Confirmation"
     end
 
+    def pending_order_confirmation(order_info)
+        
+    end
+
     def send_account_verification(user_info)
         @email = user_info.email
         @verification_url = "http://localhost:3001/users/account/verifying/#{user_info.email}"
