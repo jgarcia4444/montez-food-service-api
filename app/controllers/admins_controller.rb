@@ -158,25 +158,36 @@ class AdminsController < ApplicationController
                                     if order_address
                                         formatted_address = order_address.format_address
                                         user_order_items = user_order.get_order_items
-                                        begin
-                                            order_info = {
-                                                delivery_date: delivery_date,
-                                                invoice_payable_date: invoice_payable_date,
-                                                total_price: user_order.total_price,
-                                                address: formatted_address,
-                                                items: user_order_items
-                                            }
-                                            UserNotifierMailer.pending_order_confirmation(order_info)
-                                            render :json => {
-                                                success: true,
-                                                pendingOrderId: pending_order.id,
-                                            }
-                                        rescue StandardError => e
+                                        user = User.find_by(id: user_order.user_id)
+                                        if user
+                                            begin
+                                                order_info = {
+                                                    delivery_date: delivery_date,
+                                                    invoice_payable_date: invoice_payable_date,
+                                                    total_price: user_order.total_price,
+                                                    address: formatted_address,
+                                                    items: user_order_items,
+                                                    email: 
+                                                }
+                                                UserNotifierMailer.pending_order_confirmation(order_info)
+                                                render :json => {
+                                                    success: true,
+                                                    pendingOrderId: pending_order.id,
+                                                }
+                                            rescue StandardError => e
+                                                render :json => {
+                                                    success: false,
+                                                    error: {
+                                                        message: "There was an error sending the confirmation email.",
+                                                        specificError: e.inspect
+                                                    }
+                                                }
+                                            end
+                                        else 
                                             render :json => {
                                                 success: false,
                                                 error: {
-                                                    message: "There was an error sending the confirmation email.",
-                                                    specificError: e.inspect
+                                                    message: "There was an error finding the user to send the confirmation email to."
                                                 }
                                             }
                                         end
