@@ -71,15 +71,70 @@ class AdminsController < ApplicationController
                 order_id = pending_order.user_order_id
                 user_order = UserOrder.find_by(id: order_id)
                 pending_user_orders.append(user_order)
-                render :json => {
-                    success: true,
-                    pendingOrders: pending_user_orders,
-                }
             end
+            puts "Pending Orders Found"
+            render :json => {
+                success: true,
+                pendingOrders: pending_user_orders,
+            }
         else 
+            puts "No Pending Orders"
             render :json => {
                 success: true,
                 pendingOrders: []
+            }
+        end
+    end
+
+    def pending_order_show
+        if params[:order_id]
+            order_id = params[:order_id]
+            user_order = UserOrder.find_by(id: order_id)
+            if user_order
+                user_id = user_order.user_id
+                user = User.find_by(user_id: user_id)
+                if user
+                    order_address_id = user_order.address_id
+                    order_address = Address.find_by(id: order_address_id)
+                    formattedAddress = {
+                        id: order_address.id,
+                        street: order_address.street,
+                        city: order_address.city,
+                        state: orderAddress.state,
+                        zipCode: order_address.zip_code
+                    }
+                    render :json => {
+                        success: true,
+                        pendingOrderDetails: {
+                            companyName: user.company_name,
+                            created_at: user_order.created_at,
+                            deliveryAddress: formattedAddress,
+                            totalPrice: user_order.total_price,
+                            items: user_order.get_order_items
+                        }
+                    }
+                else 
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "There is no associated user with this pending order."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "An associated user order was not found with the information given."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "No order id was sent to find order information."
+                }
             }
         end
     end

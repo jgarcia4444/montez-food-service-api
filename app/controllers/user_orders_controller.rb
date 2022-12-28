@@ -20,6 +20,15 @@ class UserOrdersController < ApplicationController
                                 }
                                 user_order = user.create_user_order(order_info)
                                 orders_persisted = user_order.persist_ordered_items(items)
+                                pending_order = PendingOrder.create(user_order_id: user_order.id)
+                                if !pending_order
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "There was an error setting this order as a pending order."
+                                        }
+                                    }
+                                end
                                 if orders_persisted
                                     # Send Confirmation Email
                                     address = Address.find_by(id: user_order[:address_id])

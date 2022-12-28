@@ -19,4 +19,20 @@ class UserOrder < ApplicationRecord
         end
         true
     end
+
+    def get_order_items
+        ordered_items = OrderedItem.all.select{|ordered_item| ordered_item.user_order_id == self.id}
+        ordered_items.map do |ordered_item|
+            order_item_id = ordered_item.order_item_id
+            order_item = OrderItem.find_by(id: order_item_id)
+            {
+                quantity: ordered_item.quantity,
+                itemInfo: {
+                    description: order_item.description,
+                    upc: order_item.upc,
+                }
+            }
+        end
+    end
+
 end

@@ -23,5 +23,6 @@ Rails.application.routes.draw do
   post "users/admin/login", to: "admins#login"
 
   get "pending-orders", to: "admins#pending_orders_index"
+  get "users/admin/pending-order/:order_id", to: "admins#pending_order_show"
 
 end
