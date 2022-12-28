@@ -92,7 +92,7 @@ class AdminsController < ApplicationController
             user_order = UserOrder.find_by(id: order_id)
             if user_order
                 user_id = user_order.user_id
-                user = User.find_by(user_id: user_id)
+                user = User.find_by(id: user_id)
                 if user
                     order_address_id = user_order.address_id
                     order_address = Address.find_by(id: order_address_id)
@@ -100,14 +100,14 @@ class AdminsController < ApplicationController
                         id: order_address.id,
                         street: order_address.street,
                         city: order_address.city,
-                        state: orderAddress.state,
+                        state: order_address.state,
                         zipCode: order_address.zip_code
                     }
                     render :json => {
                         success: true,
                         pendingOrderDetails: {
                             companyName: user.company_name,
-                            created_at: user_order.created_at,
+                            createdAt: user_order.created_at,
                             deliveryAddress: formattedAddress,
                             totalPrice: user_order.total_price,
                             items: user_order.get_order_items

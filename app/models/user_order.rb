@@ -30,6 +30,7 @@ class UserOrder < ApplicationRecord
                 itemInfo: {
                     description: order_item.description,
                     upc: order_item.upc,
+                    price: order_item.price,
                 }
             }
         end
