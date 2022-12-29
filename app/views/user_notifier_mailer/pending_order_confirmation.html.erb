@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <hr />
+        <h1>Order Confirmed</h1>
+        <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start"></div>
+                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start"></div>
+            </div>
+            <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start"></div>
+                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start"></div>
+            </div>
+        </div>
+        <div>
+            <h2>Items</h2>
+            <div style="width: 100%; height: 150px; overflow-y: auto;">
+                <% @order_info.items.each do |item| %>
+                    
+                <% end %>
+            </div>
+        </div>
+    </body>
+</html>
