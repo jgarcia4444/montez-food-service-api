@@ -7,19 +7,40 @@
         <h1>Order Confirmed</h1>
         <div style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
-                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start"></div>
-                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start"></div>
+                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start">
+                    <p><strong>Total:</strong> $<%= @order_info.total_price %></p>
+                </div>
+                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start">
+                    <p><strong>Delivery To:</strong> <%= @order_info.address %></p>
+                </div>
             </div>
             <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
-                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start"></div>
-                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start"></div>
+                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start">
+                    <p><strong>Delivery Date:</strong> <%= @order_info.delivery_date %></p>
+                </div>
+                <div style="width: 50%; flex-direction: row; align-items: center; justify-content: flex-start">
+                    <p><strong>Invoice Payable Date:</strong> <%=@order_info.invoice_payable_date %></p>
+                </div>
             </div>
         </div>
         <div>
             <h2>Items</h2>
             <div style="width: 100%; height: 150px; overflow-y: auto;">
                 <% @order_info.items.each do |item| %>
-                    
+                    <div style="width: 100%; display: flex; flex-direction: row;">
+                        <div style="width: 50%; display: flex; flex-direction: column;">
+                            <p><strong>Name</strong></p>
+                            <p><%= item.itemInfo.description %></p>
+                        </div>
+                        <div style="width: 25%; display: flex; flex-direction: column">
+                            <p><strong>Quantity</strong></p>
+                            <p><%= item.itemInfo.quantity %></p>
+                        </div>
+                        <div style="width: 25%; display: flex; flex-direction: column">
+                            <p><strong>Price Per</strong></p>
+                            <p><%= item.itemInfo.price %></p>
+                        </div>
+                    </div>
                 <% end %>
             </div>
         </div>
