@@ -10,7 +10,11 @@ class PendingOrdersController < ApplicationController
                     order_id = order_info[:order_id]
                     user_order = UserOrder.find_by(id: order_id)
                     if user_order
-                        
+                        # order_date, date_cancelled, total_price, address, items, reason_text
+                        formatted_order_date = user_order.format_date
+                        user_order_info = {
+                            order_date: formatted_order_date,
+                        }
                     else 
                         render :json => {
                             success: false,

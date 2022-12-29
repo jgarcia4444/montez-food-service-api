@@ -36,4 +36,8 @@ class UserOrder < ApplicationRecord
         end
     end
 
+    def format_date
+        
+    end
+
 end
