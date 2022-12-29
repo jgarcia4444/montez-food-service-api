@@ -24,4 +24,9 @@ class UserNotifierMailer < ApplicationMailer
         mail to: @email, subject: "Account Verification"
     end
 
+    def cancel_order_send(user_order_info)
+        @user_order_info = user_order_info
+        mail to: user_order_info[:email], subject: "Order Cancelled"
+    end
+
 end
