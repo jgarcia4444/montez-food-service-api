@@ -25,6 +25,7 @@ class UserNotifierMailer < ApplicationMailer
     end
 
     def cancel_order_send(user_order_info)
+        # order_date, date_cancelled, total_price, address, items, reason_text
         @user_order_info = user_order_info
         mail to: user_order_info[:email], subject: "Order Cancelled"
     end
