@@ -167,9 +167,9 @@ class AdminsController < ApplicationController
                                                     total_price: user_order.total_price,
                                                     address: formatted_address,
                                                     items: user_order_items,
-                                                    email: 
+                                                    email: user.email,
                                                 }
-                                                UserNotifierMailer.pending_order_confirmation(order_info)
+                                                UserNotifierMailer.pending_order_confirmation(order_info).deliver_now
                                                 render :json => {
                                                     success: true,
                                                     pendingOrderId: pending_order.id,

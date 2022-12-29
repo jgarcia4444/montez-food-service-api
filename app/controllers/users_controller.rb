@@ -73,7 +73,6 @@ class UsersController < ApplicationController
                 end
                 begin
                     UserNotifierMailer.send_account_verification(new_user).deliver_now
-                    puts "Before rendering back the users data after a successful Verification email sent."
                     render :json => {
                         success: true,
                         userInfo: {

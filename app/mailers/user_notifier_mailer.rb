@@ -15,7 +15,7 @@ class UserNotifierMailer < ApplicationMailer
 
     def pending_order_confirmation(order_info)
         @order_info = order_info
-        mail to: order_info.email, subject "Order Confirmed"
+        mail to: order_info[:email], subject: "Order Confirmed"
     end
 
     def send_account_verification(user_info)
