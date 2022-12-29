@@ -2,6 +2,7 @@ class UserOrder < ApplicationRecord
     has_many :ordered_items
     belongs_to :user
     has_one :address
+    has_one :pending_order, dependent: :destroy
 
     def persist_ordered_items(items)
         items.each do |item|
@@ -37,7 +38,7 @@ class UserOrder < ApplicationRecord
     end
 
     def format_date
-        
+        self.created_at.to_fs(:long)
     end
 
 end
