@@ -172,7 +172,7 @@ class AdminsController < ApplicationController
                                                 UserNotifierMailer.pending_order_confirmation(order_info).deliver_now
                                                 render :json => {
                                                     success: true,
-                                                    pendingOrderId: pending_order.id,
+                                                    orderId: user_order.id,
                                                 }
                                             rescue StandardError => e
                                                 render :json => {
