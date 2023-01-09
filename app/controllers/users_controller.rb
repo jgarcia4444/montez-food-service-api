@@ -64,6 +64,8 @@ class UsersController < ApplicationController
     end
 
     def create
+        puts "Users Action Triggered!"
+        puts params
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
