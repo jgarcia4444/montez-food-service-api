@@ -76,6 +76,8 @@ class SessionsController < ApplicationController
     end
 
     def root
+        puts "TESTTTTTTTT"
+        puts "-----------"
         render :json => {
             message: "Welcome to the root route of the sessions controller."
         }
