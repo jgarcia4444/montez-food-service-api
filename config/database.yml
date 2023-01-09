@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: montez_food_service_api_production
-  username: montez_food_service_api
-  password: <%= ENV["MONTEZ_FOOD_SERVICE_API_DATABASE_PASSWORD"] %>
+  username: postgres
+  password: MontezFood %>
