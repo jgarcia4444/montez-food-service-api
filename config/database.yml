@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: montez_food_service_api_production
-  username: postgres
+  username: montez-food-service-db
   password: MontezFood %>
