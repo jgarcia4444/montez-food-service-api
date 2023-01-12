@@ -20,7 +20,7 @@ class UserNotifierMailer < ApplicationMailer
 
     def send_account_verification(user_info)
         @email = user_info.email
-        @verification_url = "http://localhost:3001/users/account/verifying/#{user_info.email}"
+        @verification_url = "https://montez-food-service-web.vercel.app/users/account/verifying/#{user_info.email}"
         mail to: @email, subject: "Account Verification"
     end
 
