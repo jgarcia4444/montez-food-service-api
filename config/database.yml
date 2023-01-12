@@ -80,7 +80,5 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: montez_food_service_api_production
-  username: montez_food_service_api
-  password: <%= ENV["MONTEZ_FOOD_SERVICE_API_DATABASE_PASSWORD"] %>
+  # <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
