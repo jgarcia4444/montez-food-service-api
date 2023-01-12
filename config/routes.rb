@@ -15,5 +15,17 @@ Rails.application.routes.draw do
   get 'order-online/fetch-suggestions/:item_query', to: "order_items#fetch_suggestions"
 
   post 'order-online/orders', to: "user_orders#persist_order"
+  post 'users/verify', to: "users#verify_user"
+  post 'addresses/:email', to: "addresses#create"
+
+  delete 'users/:email/addresses/:address_id', to: "addresses#destroy"
+
+  post "users/admin/login", to: "admins#login"
+
+  get "pending-orders", to: "admins#pending_orders_index"
+  get "users/admin/pending-order/:order_id", to: "admins#pending_order_show"
+  post "users/admin/confirm-order", to: "admins#confirm_pending_order"
+
+  post 'pending-orders/delete', to: "pending_orders#cancel_order"
 
 end

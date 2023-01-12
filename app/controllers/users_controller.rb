@@ -1,16 +1,95 @@
 class UsersController < ApplicationController
 
+    def verify_user
+        if params[:user_info]
+            user_info = params[:user_info]
+            if user_info[:email]
+                email = user_info[:email]
+                user = User.find_by(email: email)
+                if user
+                    if user.verified == false
+                        user.update(verified: true)
+                        if user.valid?
+                            latest_cart_setup = user.get_latest_cart_setup
+                            render :json => {
+                                success: true,
+                                userInfo: {
+                                    email: user.email,
+                                    companyName: user.company_name,
+                                    isOrdering: user.is_ordering
+                                },
+                                latestCartInfo: latest_cart_setup,
+                            }
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "There was an error verifying your account, please attempt again."
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "User has already verified their account and can log in."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "No user was found with the given user email."
+                        }
+                    }
+                end
+
+            else 
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "An email must be provided in order to verify the user."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "User information must be formatted and sent to back end properly."
+                }
+            }
+        end
+    end
+
     def create
+        puts "Users Action Triggered!"
+        puts params
         if params[:user_info]
             new_user = User.create(user_params)
             if new_user.valid?
-                render :json => {
-                    success: true,
-                    userInfo: {
-                        email: new_user.email,
-                        companyName: new_user.company_name
+                if params[:cart_info]
+                    cart_info = params[:cart_info]
+                    new_user.persist_temp_cart(cart_info)
+                end
+                begin
+                    UserNotifierMailer.send_account_verification(new_user).deliver_now
+                    render :json => {
+                        success: true,
+                        userInfo: {
+                            email: new_user.email,
+                        }
                     }
-                }
+                rescue StandardError => e
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "There was an error sending the email to verify your account.",
+                            specificError: e.inspect
+                        }
+                    }
+                end
             else
                 render :json => {
                     success: false,
@@ -232,7 +311,7 @@ class UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user_info).permit(:email, :password, :company_name)
+        params.require(:user_info).permit(:email, :password, :company_name, :is_ordering, :first_name, :last_name, :phone_number)
     end
 
 end

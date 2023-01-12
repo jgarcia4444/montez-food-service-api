@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
     def login
-        puts "LOGIN ACTION TRIGGERED"
         if params[:user_info]
             user_info = params[:user_info]
             if user_info[:email]
@@ -11,18 +10,27 @@ class SessionsController < ApplicationController
                         password = user_info[:password]
                         authenticated_user = user.authenticate(password)
                         if authenticated_user
-                            users_past_orders = authenticated_user.past_orders
-                            puts "USER_PAST_ORDERS------"
-                            puts users_past_orders
-                            user_past_orders = users_past_orders.count > 0 ? users_past_orders : []
-                            render :json => {
-                                success: true,
-                                userInfo: {
-                                    email: authenticated_user.email,
-                                    companyName: authenticated_user.company_name,
-                                    pastOrders: user_past_orders,
+                            if authenticated_user.verified == true
+                                users_past_orders = authenticated_user.past_orders
+                                user_past_orders = users_past_orders.count > 0 ? users_past_orders : []
+                                user_locations = authenticated_user.get_user_locations
+                                render :json => {
+                                    success: true,
+                                    userInfo: {
+                                        email: authenticated_user.email,
+                                        companyName: authenticated_user.company_name,
+                                        pastOrders: user_past_orders,
+                                        locations: user_locations
+                                    }
                                 }
-                            }
+                            else
+                                render :json => {
+                                    success: false,
+                                    error: {
+                                        message: "Account must be verified to be able to login."
+                                    }
+                                }
+                            end
                         else
                             render :json => {
                                 success: false,

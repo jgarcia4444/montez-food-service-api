@@ -10,9 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_03_020014) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_26_190926) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "city", default: ""
+    t.string "state", default: ""
+    t.string "zip_code", default: ""
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "street", default: ""
+  end
+
+  create_table "admins", force: :cascade do |t|
+    t.string "username"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "order_items", force: :cascade do |t|
     t.string "upc"
@@ -35,11 +52,33 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_03_020014) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "pending_orders", force: :cascade do |t|
+    t.integer "user_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "temp_cart_items", force: :cascade do |t|
+    t.integer "temp_cart_id"
+    t.integer "order_item_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "temp_carts", force: :cascade do |t|
+    t.integer "user_id"
+    t.float "total_price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_orders", force: :cascade do |t|
     t.float "total_price"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "address_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -49,6 +88,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_03_020014) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ota_code"
+    t.boolean "verified", default: false
+    t.boolean "is_ordering", default: false
+    t.string "first_name", default: ""
+    t.string "last_name", default: ""
+    t.string "phone_number", default: ""
+    t.integer "address_id"
   end
 
 end

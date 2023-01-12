@@ -9,7 +9,25 @@ class UserNotifierMailer < ApplicationMailer
 
     def send_order_confirmation(order_info, user_email)
         @order_info = order_info
-        mail to: user_email, subject: "Order Confirmation"
+        @configured_address = "#{@order_info[:address][:street]}, #{@order_info[:address][:city]}, #{@order_info[:address][:state]}, #{@order_info[:address][:zip_code]}"
+        mail to: user_email, subject: "Order Received"
+    end
+
+    def pending_order_confirmation(order_info)
+        @order_info = order_info
+        mail to: order_info[:email], subject: "Order Confirmed"
+    end
+
+    def send_account_verification(user_info)
+        @email = user_info.email
+        @verification_url = "http://localhost:3001/users/account/verifying/#{user_info.email}"
+        mail to: @email, subject: "Account Verification"
+    end
+
+    def cancel_order_send(user_order_info)
+        # order_date, date_cancelled, total_price, address, items, reason_text
+        @user_order_info = user_order_info
+        mail to: user_order_info[:email], subject: "Order Cancelled"
     end
 
 end

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div style="width: 100%; padding: 10px;">
+            <div style="width: 100%">
+                <h1>Our Apologies,</h1>
+            </div>
+            <div style="width: 100%;">
+                <p>Your previous order (see details below) could not be approved due to the supplied reason(s) below.</p>
+                <h3>Reason(s)</h3>
+                <p><%= @user_order_info[:reason_text] %></p>
+            </div>
+            <div style="width: 100%;">
+                <div style="width: 100%;">
+                    <div style="width: 50%;"><strong>Total Price:</strong> $<%= @user_order_info[:total_price] %></div>
+                    <div style="width: 50%;"><strong>Delivery To:</strong> <%= @user_order_info[:address] %></div>
+                </div>
+                <div style="width: 100%;">
+                    <div style="width: 50%;"><strong>Order Date:</strong> <%= @user_order_info[:order_date] %></div>
+                    <div style="width: 50%;"><strong>Date Cancelled:</strong> <%= @user_order_info[:date_cancelled] %></div>
+                </div>
+                <div style="width: 100%;">
+                    <h3>Items</h3>
+                    <div style="width: 100%; height: 200px; overflow-y: auto;">
+                        <%@user_order_info[:items].each do |item|%>
+                            <div style="width: 100%; display: flex; flex-direction: row">
+                                <div style="width: 50%;">
+                                    <p><strong>Name</strong></p>
+                                    <p><%= item[:itemInfo][:description] %></p>
+                                </div>
+                                <div style="width: 25%;">
+                                    <p><strong>Quantity</strong></p>
+                                    <p><%= item[:quantity] %></p>
+                                </div>
+                                <div style="width: 25%;">
+                                    <p><strong>Price Per</strong></p>
+                                    <p><%= item[:itemInfo][:price] %></p>
+                                </div>
+                            </div>
+                        <%end%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

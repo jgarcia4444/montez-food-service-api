@@ -3,8 +3,8 @@
     <head>
     </head>
     <body>
-        <h1>Order Confirmation</h1>
-        <h4>Your order has been received.</h4>
+        <h1>Order Received</h1>
+        <h4>Your order has been received. We will review the order and send another email stating the date of expected delivery.</h4>
         <hr />
         <table>
             <tr>
@@ -30,6 +30,8 @@
             </tr>
         </table>
         <h4>Order Date: <%= @order_info[:orderDate] %></h4>
+        <h2>Address:</h2>
+        <p><%= @configured_address %></p>
         <p>We will send an email stating when you are to expect the deliver of your ordered items.</p>
     </body>
 </html>

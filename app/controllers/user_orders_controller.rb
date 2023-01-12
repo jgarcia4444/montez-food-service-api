@@ -11,35 +11,61 @@ class UserOrdersController < ApplicationController
                         items = order_info[:items]
                         user = User.find_by_email(user_email)
                         if user
-                            user_order = user.create_user_order(items)
-                            orders_persisted = user_order.persist_ordered_items(items)
-                            if orders_persisted
-                                # Send Confirmation Email
-                                past_order_info = {
-                                    totalPrice: user_order.total_price,
+                            if params[:address_info]
+                                address_info = params[:address_info]
+                                address_id = address_info[:address_id]
+                                order_info = {
                                     items: items,
-                                    orderDate: user_order.created_at
+                                    address_id: address_id
                                 }
-                                begin 
-                                    UserNotifierMailer.send_order_confirmation(past_order_info, user_email).deliver_now
-                                    render :json => {
-                                        success: true,
-                                        pastOrder: past_order_info
-                                    }
-                                rescue StandardError => e
+                                user_order = user.create_user_order(order_info)
+                                orders_persisted = user_order.persist_ordered_items(items)
+                                pending_order = PendingOrder.create(user_order_id: user_order.id)
+                                if !pending_order
                                     render :json => {
                                         success: false,
                                         error: {
-                                            message: "There was an error sending the order confirmation email",
-                                            specificError: e.inspect
+                                            message: "There was an error setting this order as a pending order."
                                         }
                                     }
                                 end
-                            else 
+                                if orders_persisted
+                                    # Send Confirmation Email
+                                    address = Address.find_by(id: user_order[:address_id])
+                                    past_order_info = {
+                                        totalPrice: user_order.total_price,
+                                        items: items,
+                                        orderDate: user_order.created_at,
+                                        address: address,
+                                    }
+                                    begin 
+                                        UserNotifierMailer.send_order_confirmation(past_order_info, user_email).deliver_now
+                                        render :json => {
+                                            success: true,
+                                            pastOrder: past_order_info
+                                        }
+                                    rescue StandardError => e
+                                        render :json => {
+                                            success: false,
+                                            error: {
+                                                message: "There was an error sending the order confirmation email",
+                                                specificError: e.inspect
+                                            }
+                                        }
+                                    end
+                                else 
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "There was an error while persisting ordered items."
+                                        }
+                                    }
+                                end
+                            else
                                 render :json => {
                                     success: false,
                                     error: {
-                                        message: "There was an error while persisting ordered items."
+                                        message: "An order must have an address selected."
                                     }
                                 }
                             end

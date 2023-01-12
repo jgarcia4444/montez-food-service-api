@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  temp_cart_id: 1
+  order_item_id: 1
+  quantity: 1
+
+two:
+  temp_cart_id: 1
+  order_item_id: 1
+  quantity: 1

@@ -1,6 +1,8 @@
 class UserOrder < ApplicationRecord
     has_many :ordered_items
     belongs_to :user
+    has_one :address
+    has_one :pending_order, dependent: :destroy
 
     def persist_ordered_items(items)
         items.each do |item|
@@ -17,6 +19,26 @@ class UserOrder < ApplicationRecord
             end
         end
         true
+    end
+
+    def get_order_items
+        ordered_items = OrderedItem.all.select{|ordered_item| ordered_item.user_order_id == self.id}
+        ordered_items.map do |ordered_item|
+            order_item_id = ordered_item.order_item_id
+            order_item = OrderItem.find_by(id: order_item_id)
+            {
+                quantity: ordered_item.quantity,
+                itemInfo: {
+                    description: order_item.description,
+                    upc: order_item.upc,
+                    price: order_item.price,
+                }
+            }
+        end
+    end
+
+    def format_date
+        self.created_at.to_fs(:long)
     end
 
 end
