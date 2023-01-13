@@ -47,10 +47,10 @@ class UserOrdersController < ApplicationController
                                         orderDate: user_order.created_at,
                                         orderAddress: address,
                                     }
+                                    puts "Past order info -------"
+                                    puts past_order_info
                                     begin 
                                         UserNotifierMailer.send_order_confirmation(past_order_info, user_email).deliver_now
-                                        puts "Past order info -------"
-                                        puts past_order_info
                                         render :json => {
                                             success: true,
                                             pastOrder: past_order_info
