@@ -12,7 +12,7 @@
             </div>
             <div style="width: 100%;">
                 <div style="width: 100%;">
-                    <div style="width: 50%;"><strong>Total Price:</strong> $<%= @user_order_info[:total_price] %></div>
+                    <div style="width: 50%;"><strong>Total Price:</strong> $<%= @user_order_info[:total_price].round(2) %></div>
                     <div style="width: 50%;"><strong>Delivery To:</strong> <%= @user_order_info[:address] %></div>
                 </div>
                 <div style="width: 100%;">
@@ -34,7 +34,7 @@
                                 </div>
                                 <div style="width: 25%;">
                                     <p><strong>Price Per</strong></p>
-                                    <p><%= item[:itemInfo][:price] %></p>
+                                    <p><%= item[:itemInfo][:price].round(2) %></p>
                                 </div>
                             </div>
                         <%end%>
