@@ -3,8 +3,6 @@ class AddressesController < ApplicationController
     def create
         if params[:email]
             email = params[:email]
-            puts "---------------"
-            puts "EMAIL: #{email}"
             user = User.find_by(email: "#{email}.com")
             if user
                 if user.verified == true
@@ -20,7 +18,7 @@ class AddressesController < ApplicationController
                             }
                         else
                             render :json => {
-                                success: true,
+                                success: false,
                                 error: {
                                     message: "There was an error saving the users address."
                                 }

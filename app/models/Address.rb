@@ -3,6 +3,7 @@ class Address < ApplicationRecord
     
     def format_for_frontend
         {
+            id: self.id
             street: self.street,
             city: self.city,
             state: self.state,

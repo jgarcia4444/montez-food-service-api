@@ -1,8 +1,6 @@
 class UserOrdersController < ApplicationController
 
     def persist_order
-        puts "Here are the params from the persist order action"
-        puts params
         if params[:user_info]
             if params[:order_info]
                 user_info = params[:user_info]
