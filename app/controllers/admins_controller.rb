@@ -87,6 +87,8 @@ class AdminsController < ApplicationController
     end
 
     def pending_order_show
+        puts "Params from pending order show -------"
+        puts params
         if params[:order_id]
             order_id = params[:order_id]
             user_order = UserOrder.find_by(id: order_id)
