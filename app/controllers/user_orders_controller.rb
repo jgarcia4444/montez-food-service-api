@@ -29,14 +29,21 @@ class UserOrdersController < ApplicationController
                                         }
                                     }
                                 end
+                                #
                                 if orders_persisted
-                                    # Send Confirmation Email
                                     address = Address.find_by(id: user_order[:address_id])
+                                    order_address = {
+                                        id: address.id,
+                                        street: address.street,
+                                        city: address.city,
+                                        state: address.state,
+                                        zipCode: address.zip_code,
+                                    }
                                     past_order_info = {
                                         totalPrice: user_order.total_price,
                                         items: items,
                                         orderDate: user_order.created_at,
-                                        address: address,
+                                        orderAddress: address,
                                     }
                                     begin 
                                         UserNotifierMailer.send_order_confirmation(past_order_info, user_email).deliver_now
