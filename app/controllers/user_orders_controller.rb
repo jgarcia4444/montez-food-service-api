@@ -32,6 +32,8 @@ class UserOrdersController < ApplicationController
                                 #
                                 if orders_persisted
                                     address = Address.find_by(id: user_order[:address_id])
+                                    puts "Address -------"
+                                    puts address
                                     order_address = {
                                         id: address.id,
                                         street: address.street,
@@ -47,6 +49,8 @@ class UserOrdersController < ApplicationController
                                     }
                                     begin 
                                         UserNotifierMailer.send_order_confirmation(past_order_info, user_email).deliver_now
+                                        puts "Past order info -------"
+                                        puts past_order_info
                                         render :json => {
                                             success: true,
                                             pastOrder: past_order_info
