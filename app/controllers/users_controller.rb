@@ -77,9 +77,9 @@ class UsersController < ApplicationController
                     UserNotifierMailer.send_account_verification(new_user).deliver_now
                     render :json => {
                         success: true,
-                        userInfo: {
-                            email: new_user.email,
-                        }
+                        # userInfo: {
+                        #     email: new_user.email,
+                        # }
                     }
                 rescue StandardError => e
                     render :json => {
