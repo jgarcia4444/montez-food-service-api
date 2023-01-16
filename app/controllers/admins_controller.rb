@@ -263,13 +263,35 @@ class AdminsController < ApplicationController
     def pass_credentials
         client_id = "ABZevbO4SLMjWTElFSGojv0oXFDEQsedj3bnWShuK6PQqpJjDU"
         client_secret = "g8GDQ5BruCDEQmzRraWAmi3zpzxGTSdyX74gbJM9"
-        render :json => {
-            success: true,
-            clientDetails: {
-                clientID: client_id,
-                clientSecret: client_secret
+
+        if params[:admin_username]
+            username = params[:admin_username]
+            admin = Admin.find_by(username: username)
+            if admin
+                render :json => {
+                    success: true,
+                    clientDetails: {
+                        clientID: client_id,
+                        clientSecret: client_secret
+                    }
+                }
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "Incorrect credentials for the admin."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "An admin username must be present with this request."
+                }
             }
-        }
+        end
+
     end
 
     # def authenticate
