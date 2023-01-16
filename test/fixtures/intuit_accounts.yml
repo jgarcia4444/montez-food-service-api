@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  oauth2_access_token: MyText
+  oauth2_access_token_expires_at: 2023-01-15 13:42:35
+  oauth2_refresh_token: MyText
+  oauth2_refresh_token_expires_at: 2023-01-15 13:42:35
+  track_purchase_order_quantity: false
+
+two:
+  oauth2_access_token: MyText
+  oauth2_access_token_expires_at: 2023-01-15 13:42:35
+  oauth2_refresh_token: MyText
+  oauth2_refresh_token_expires_at: 2023-01-15 13:42:35
+  track_purchase_order_quantity: false

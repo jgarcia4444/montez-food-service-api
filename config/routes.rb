@@ -28,4 +28,6 @@ Rails.application.routes.draw do
 
   post 'pending-orders/delete', to: "pending_orders#cancel_order"
 
+  get 'admin/get-client-details/:admin_username', to: "admins#pass_credentials"
+
 end

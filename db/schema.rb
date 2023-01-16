@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_26_190926) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_15_214235) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_26_190926) do
   create_table "admins", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "intuit_accounts", force: :cascade do |t|
+    t.text "oauth2_access_token"
+    t.datetime "oauth2_access_token_expires_at", precision: nil
+    t.text "oauth2_refresh_token"
+    t.datetime "oauth2_refresh_token_expires_at", precision: nil
+    t.boolean "track_purchase_order_quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

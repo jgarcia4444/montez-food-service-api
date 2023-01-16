@@ -260,4 +260,33 @@ class AdminsController < ApplicationController
         end
     end
 
+    def pass_credentials
+        client_id = "ABZevbO4SLMjWTElFSGojv0oXFDEQsedj3bnWShuK6PQqpJjDU"
+        client_secret = "g8GDQ5BruCDEQmzRraWAmi3zpzxGTSdyX74gbJM9"
+        render :json => {
+            success: true,
+            clientDetails: {
+                clientID: client_id,
+                clientSecret: client_secret
+            }
+        }
+    end
+
+    # def authenticate
+    #     redirect_uri = quickbooks_oauth_callback_url
+    #     grant_url = oauth_client.auth_code.authorize_url(redirect_uri: redirect_uri, response_type: "code", state: SecureRandom.hex(12), scope: "com.intuit.quickbooks.accounting")
+    #     redirect_to grant_url
+    # end
+
+    # def oauth_callback
+    #     if params[:state].present?
+    #       # use the state value to retrieve from your backend any information you need to identify the customer in your system
+    #       redirect_uri = quickbooks_oauth_callback_url
+    #       if resp = oauth2_client.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
+    #         # save your tokens here. For example:
+    #         # quickbooks_credentials.update_attributes(access_token: resp.token, refresh_token: resp.refresh_token, realm_id: params[:realmId])
+    #       end
+    #     end
+    #   end
+
 end
