@@ -307,13 +307,13 @@ class AdminsController < ApplicationController
             token_uri = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
             uri = URI(token_uri)
             # uri = "#{token_uri}?grant_type=authorization_code&code=#{authorization_code}&redirect_uri=#{redirect_uri}"
-            params = {
-                grant_type: "authorization_code",
-                code: authorization_code,
-                redirect_uri: redirect_uri
-            }
-            uri.query = URI.encode_www_form(params)
-            response = Net::HTTP.get_response uri
+            # params = {
+            #     ,
+                
+                
+            # }
+            # uri.query = URI.encode_www_form(params)
+            response = Net::HTTP.post_form(uri, 'grant_type': "authorization_code", 'code': authorization_code, 'redirect_uri': redirect_uri)
             puts "RESPONSE-----------"
             puts response
             puts response.body
