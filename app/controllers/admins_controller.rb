@@ -305,10 +305,18 @@ class AdminsController < ApplicationController
             puts authorization_code
             redirect_uri = "https://montez-food-service-api.herokuapp.com/oauth2/tokens"
             token_uri = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
-            uri = "#{token_uri}?grant_type=authorization_code&code=#{authorization_code}&redirect_uri=#{redirect_uri}"
+            uri = URI(token_uri)
+            # uri = "#{token_uri}?grant_type=authorization_code&code=#{authorization_code}&redirect_uri=#{redirect_uri}"
+            params = {
+                grant_type: "authorization_code",
+                code: authorization_code,
+                redirect_uri: redirect_uri
+            }
+            uri.query = URI.encode_www_form(params)
             response = Net::HTTP.get_response URI(uri)
             puts "RESPONSE-----------"
             puts response
+            puts response.body
             if response.code == 200
                 render :json => {
                     success: true,
