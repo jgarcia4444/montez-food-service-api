@@ -306,7 +306,7 @@ class AdminsController < ApplicationController
             redirect_uri = "https://montez-food-service-api.herokuapp.com/oauth2/tokens"
             token_uri = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
             uri = "#{token_uri}?grant_type=authorization_code&code=#{authorization_code}&redirect_uri=#{redirect_uri}"
-            response = Net::HTTP.get URI(uri)
+            response = Net::HTTP.get_response URI(uri)
             puts "RESPONSE-----------"
             puts response
             if response.code == 200
