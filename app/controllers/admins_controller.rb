@@ -313,7 +313,7 @@ class AdminsController < ApplicationController
                 redirect_uri: redirect_uri
             }
             uri.query = URI.encode_www_form(params)
-            response = Net::HTTP.get_response URI(uri)
+            response = Net::HTTP.get_response uri
             puts "RESPONSE-----------"
             puts response
             puts response.body
