@@ -30,7 +30,7 @@ Rails.application.routes.draw do
 
   get 'admin/get-client-details/:admin_username', to: "admins#pass_credentials"
 
-  get 'oauth/tokens/get', to: "admins#get_tokens"
+  get 'oauth/tokens/get/:authorization_code', to: "admins#get_tokens"
 
   post 'oauth2/tokens', to: "admins#send_tokens"
 
