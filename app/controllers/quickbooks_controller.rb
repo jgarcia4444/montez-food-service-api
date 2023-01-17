@@ -1,5 +1,5 @@
 
-class QuickBooksController < ApplicationController
+class QuickbooksController < ApplicationController
     
     def authenticate
         redirect_uri = "https://montez-food-service-web.vercel.app/users/admin"
