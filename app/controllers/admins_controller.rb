@@ -294,6 +294,11 @@ class AdminsController < ApplicationController
 
     end
 
+    def send_tokens
+        puts 'PARAMS--------'
+        puts params
+    end
+
     def get_tokens
         if params[:token_information]
             token_info = params[:token_information]
