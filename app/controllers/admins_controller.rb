@@ -324,7 +324,7 @@ class AdminsController < ApplicationController
                     }
                 end
             else
-                render: json => {
+                render :json => {
                     success: false,
                     error: {
                         message: "The authorization code is needed to gather tokens."
