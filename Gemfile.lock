@@ -123,6 +123,8 @@ GEM
     msgpack (1.6.0)
     multi_xml (0.6.0)
     multipart-post (2.2.3)
+    net-http (0.2.2)
+      uri
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
     net-imap (0.3.4)
@@ -214,6 +216,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
+    uri (0.10.1)
     version_gem (1.1.1)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -231,6 +234,7 @@ DEPENDENCIES
   bootsnap
   debug
   dotenv-rails
+  net-http (~> 0.2.2)
   pg
   puma (~> 5.0)
   quickbooks-ruby
@@ -238,6 +242,7 @@ DEPENDENCIES
   rails (~> 7.0.3)
   rest-client (~> 2.1)
   tzinfo-data
+  uri (~> 0.10.0)
 
 RUBY VERSION
    ruby 3.1.3p185
