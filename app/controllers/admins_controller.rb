@@ -300,34 +300,24 @@ class AdminsController < ApplicationController
     end
 
     def get_tokens
-        if params[:token_information]
-            token_info = params[:token_information]
-            puts token_information
-            if token_info[:authorization_code]
-                authorization_code = token_info[:authorization_code]
-                redirect_uri = "https://montez-food-service-api.herokuapp.com/oauth2/tokens"
-                token_uri = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
-                uri = "#{token_uri}?grant_type=authorization_code&code=#{authorization_code}&redirect_uri=#{redirect_uri}"
-                response = RestClient.get(uri)
-                puts "RESPONSE-----------"
-                puts response
-                if response.code == 200
-                    render :json => {
-                        success: true,
-                    }
-                else
-                    render :json => {
-                        success: false,
-                        error: {
-                            message: "There was an error getting the response from the quickbooks server."
-                        }
-                    }
-                end
+        if params[:authorization_code]
+            authorization_code = params[:authorization_code]
+            puts authorization_code
+            redirect_uri = "https://montez-food-service-api.herokuapp.com/oauth2/tokens"
+            token_uri = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
+            uri = "#{token_uri}?grant_type=authorization_code&code=#{authorization_code}&redirect_uri=#{redirect_uri}"
+            response = RestClient.get(uri)
+            puts "RESPONSE-----------"
+            puts response
+            if response.code == 200
+                render :json => {
+                    success: true,
+                }
             else
                 render :json => {
                     success: false,
                     error: {
-                        message: "The authorization code is needed to gather tokens."
+                        message: "There was an error getting the response from the quickbooks server."
                     }
                 }
             end
@@ -335,7 +325,7 @@ class AdminsController < ApplicationController
             render :json => {
                 success: false,
                 error: {
-                    message: "Not enough data sent to gather tokens."
+                    message: "The authorization code is needed to gather tokens."
                 }
             }
         end
