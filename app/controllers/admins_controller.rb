@@ -177,6 +177,19 @@ class AdminsController < ApplicationController
                                                 }
                                             }
                                             invoice_email_status = Admin.send_invoice(info_for_invoice)
+                                            if invoice_email_status == "EmailSent"
+                                                render :json => {
+                                                    success: true,
+                                                    orderId: user_order.id
+                                                }
+                                            else
+                                                render :json => {
+                                                    success: false,
+                                                    error: {
+                                                        message: "There was an error sending the invoice through email."
+                                                    }
+                                                }
+                                            end
                                             begin
                                                 order_info = {
                                                     delivery_date: delivery_date,
