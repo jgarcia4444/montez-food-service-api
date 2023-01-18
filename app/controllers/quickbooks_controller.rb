@@ -11,6 +11,8 @@ class QuickbooksController < ApplicationController
         puts "PARAMS ----- FROM OAUTH CALLBACK"
         puts params
         redirect_uri = "https://montez-food-service-web.vercel.app/users/admin"
+        puts OAUTH2_CLIENT
+        puts OAUTH2_CLIENT.auth_code
         if resp = OAUTH2_CLIENT.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
             puts "RESP------"
             puts resp
