@@ -27,6 +27,10 @@ class QuickbooksController < ApplicationController
         if resp = oauth2_client.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
             puts "Resp from getting a token"
             puts resp
+            render :json => {
+                success: true,
+                resp
+            }
         else
             render :json => {
                 success: false,
