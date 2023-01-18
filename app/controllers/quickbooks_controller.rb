@@ -14,8 +14,8 @@ class QuickbooksController < ApplicationController
             puts resp
             render :json => {
                 success: true,
-                refreshToken: resp[:refresh_token],
-                accessToken: resp[:access_token],
+                refreshToken: resp.refresh_token,
+                accessToken: resp.token,
             }
         else
             render :json => {
