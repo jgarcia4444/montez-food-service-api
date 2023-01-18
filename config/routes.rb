@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   get 'admin/get-client-details/:admin_username', to: "admins#pass_credentials"
 
   get 'oauth/authenticate', to: "quickbooks#authenticate"
+  post 'oauth/callback', to: "quickbooks#oauth_callback"
 
   post 'oauth2/tokens', to: "admins#send_tokens"
 
