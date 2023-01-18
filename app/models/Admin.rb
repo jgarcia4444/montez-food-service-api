@@ -1,13 +1,6 @@
  class Admin < ApplicationRecord
     has_secure_password
 
-    oauth_params = {
-        site: "https://appcenter.intuit.com/connect/oauth2",
-        authorize_url: "https://appcenter.intuit.com/connect/oauth2",
-        token_url: "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
-    }
-    oauth2_client = OAuth2::Client.new(ENV['OAUTH2_CLIENT_ID'], ENV['OAUTH2_CLIENT_SECRET'], oauth_params)
-
     def verify(password)
         if self.authenticate(password)
             true
@@ -17,6 +10,12 @@
     end
 
     def self.send_invoice(info_for_invoice)
+        oauth_params = {
+            site: "https://appcenter.intuit.com/connect/oauth2",
+            authorize_url: "https://appcenter.intuit.com/connect/oauth2",
+            token_url: "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
+        }
+        oauth2_client = OAuth2::Client.new(ENV['OAUTH2_CLIENT_ID'], ENV['OAUTH2_CLIENT_SECRET'], oauth_params)
         service_info = info_for_invoice[:service_info]
         customer_info = info_for_invoice[:customer_info]
         invoice_info = info_for_invoice[:invoice_info]
