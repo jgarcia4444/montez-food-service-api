@@ -7,7 +7,7 @@ class QuickbooksController < ApplicationController
             authorize_url: "https://appcenter.intuit.com/connect/oauth2",
             token_url: "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
         }
-        oauth2_client = OAuth2::Client.new(ENV['OAUTH_CLIENT_ID'], ENV['OAUTH_CLIENT_SECRET'], oauth_params)
+        oauth2_client = OAuth2::Client.new(ENV['OAUTH2_CLIENT_ID'], ENV['OAUTH2_CLIENT_SECRET'], oauth_params)
         # redirect_uri = "https://montez-food-service-web.vercel.app/users/admin"
         redirect_uri = "https://montez-food-service-api.herokuapp.com/oauth/callback"
         grant_url = oauth2_client.auth_code.authorize_url(redirect_uri: redirect_uri, response_type: "code", state: SecureRandom.hex(12), scope: "com.intuit.quickbooks.accounting")
