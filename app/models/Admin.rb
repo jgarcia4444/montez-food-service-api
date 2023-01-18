@@ -10,16 +10,16 @@
     end
 
     def self.send_invoice(info_for_invoice)
-        oauth_params = {
-            site: "https://appcenter.intuit.com/connect/oauth2",
-            authorize_url: "https://appcenter.intuit.com/connect/oauth2",
-            token_url: "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
-        }
-        oauth2_client = OAuth2::Client.new(ENV['OAUTH2_CLIENT_ID'], ENV['OAUTH2_CLIENT_SECRET'], oauth_params)
+        # oauth_params = {
+        #     site: "https://appcenter.intuit.com/connect/oauth2",
+        #     authorize_url: "https://appcenter.intuit.com/connect/oauth2",
+        #     token_url: "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
+        # }
+        # oauth2_client = OAuth2::Client.new(ENV['OAUTH2_CLIENT_ID'], ENV['OAUTH2_CLIENT_SECRET'], oauth_params)
         service_info = info_for_invoice[:service_info]
         customer_info = info_for_invoice[:customer_info]
         invoice_info = info_for_invoice[:invoice_info]
-        access_token = OAuth2::AccessToken.new(oauth2_client, service_info[:access_token], refresh_token: service_info[:refresh_token])
+        access_token = OAuth2::AccessToken.new(OAUTH2_CLIENT, service_info[:access_token], refresh_token: service_info[:refresh_token])
 
         service = Quickbooks::Service::Invoice.new
         service.company_id = service_info[:realm_id]
