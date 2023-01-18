@@ -162,34 +162,75 @@ class AdminsController < ApplicationController
                                         user_order_items = user_order.get_order_items
                                         user = User.find_by(id: user_order.user_id)
                                         if user
-                                            info_for_invoice = {
-                                                service_info: {
-                                                    realm_id: realm_id, 
-                                                    access_token: acess_token,
-                                                    refresh_token: refresh_token
-                                                },
-                                                customer_info: {
-                                                    user: user,
-                                                    order_address: order_address
-                                                },
-                                                invoice_info: {
-                                                    items: user_order_items   
-                                                }
-                                            }
-                                            invoice_email_status = Admin.send_invoice(info_for_invoice)
-                                            if invoice_email_status == "EmailSent"
-                                                render :json => {
-                                                    success: true,
-                                                    orderId: user_order.id
-                                                }
-                                            else
+                                            if params[:service_info]
+                                                service_info = params[:service_info]
+                                                if service_info[:realm_id]
+                                                    realm_id = service_info[:realm_id]
+                                                    if service_info[:access_token]
+                                                        access_token = service_info[:access_token]
+                                                        if service_info[:refresh_token]
+                                                            refresh_token = service_info[:refresh_token]
+                                                            info_for_invoice = {
+                                                                service_info: {
+                                                                    realm_id: realm_id, 
+                                                                    access_token: access_token,
+                                                                    refresh_token: refresh_token
+                                                                },
+                                                                customer_info: {
+                                                                    user: user,
+                                                                    order_address: order_address
+                                                                },
+                                                                invoice_info: {
+                                                                    items: user_order_items   
+                                                                }
+                                                            }
+                                                            invoice_email_status = Admin.send_invoice(info_for_invoice)
+                                                            if invoice_email_status == "EmailSent"
+                                                                render :json => {
+                                                                    success: true,
+                                                                    orderId: user_order.id
+                                                                }
+                                                            else
+                                                                render :json => {
+                                                                    success: false,
+                                                                    error: {
+                                                                        message: "There was an error sending the invoice through email."
+                                                                    }
+                                                                }
+                                                            end
+                                                        else
+                                                            render :json => {
+                                                                success: false,
+                                                                error: {
+                                                                    message: "Refresh token was not found."
+                                                                }
+                                                            }
+                                                        end
+                                                    else
+                                                        render :json => {
+                                                            success: false,
+                                                            error: {
+                                                                message: "Access token was not found"
+                                                            }
+                                                        }
+                                                    end
+                                                else
+                                                    render :json => {
+                                                        success: false,
+                                                        error: {
+                                                            message: "Realm ID was not found."
+                                                        }
+                                                    }
+                                                end
+                                            else 
                                                 render :json => {
                                                     success: false,
                                                     error: {
-                                                        message: "There was an error sending the invoice through email."
+                                                        message: "The service info was not sent to the backend."
                                                     }
                                                 }
                                             end
+                                            
                                             begin
                                                 order_info = {
                                                     delivery_date: delivery_date,
