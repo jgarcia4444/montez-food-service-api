@@ -162,6 +162,21 @@ class AdminsController < ApplicationController
                                         user_order_items = user_order.get_order_items
                                         user = User.find_by(id: user_order.user_id)
                                         if user
+                                            info_for_invoice = {
+                                                service_info: {
+                                                    realm_id: realm_id, 
+                                                    access_token: acess_token,
+                                                    refresh_token: refresh_token
+                                                }
+                                                customer_info: {
+                                                    user: user,
+                                                    order_address: order_address
+                                                }
+                                                invoice_info: {
+                                                    items: user_order_items   
+                                                }
+                                            }
+                                            invoice_email_status = Admin.send_invoice(info_for_invoice)
                                             begin
                                                 order_info = {
                                                     delivery_date: delivery_date,

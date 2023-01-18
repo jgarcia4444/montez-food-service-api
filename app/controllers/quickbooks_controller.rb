@@ -31,7 +31,6 @@ class QuickbooksController < ApplicationController
 
     end
 
-    # generate an oauth2 access token to fire requests
-    # access_token = OAuth2::AccessToken.new(oauth2_client, qb_access_token, refresh_token: qb_refresh_token)
+    
 
 end
