@@ -167,11 +167,11 @@ class AdminsController < ApplicationController
                                                     realm_id: realm_id, 
                                                     access_token: acess_token,
                                                     refresh_token: refresh_token
-                                                }
+                                                },
                                                 customer_info: {
                                                     user: user,
                                                     order_address: order_address
-                                                }
+                                                },
                                                 invoice_info: {
                                                     items: user_order_items   
                                                 }
