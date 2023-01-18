@@ -29,6 +29,7 @@
         user = customer_info[:user]
         order_address = customer_info[:order_address]
         customer = nil
+        puts service
         puts service.fetch_by_id(user.id.to_s) 
         if service.fetch_by_id(user.id.to_s)
             customer = service.fetch_by_id(user.id.to_s)
