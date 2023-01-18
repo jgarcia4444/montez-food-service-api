@@ -57,11 +57,34 @@
             customer.billing_address = address
         end
 
-        #set up invoice
+        invoice = Quickbooks::Model::Invoice.new
+        invoice.customer_id = customer.id
+        invoice.txn_date = DateTime.current
+        items = invoice_info[:items]
+        invoice_with_line_items = add_line_items(items, invoice)
+
+        serviced_invoice = service.create(invoice_with_line_items)
+        sent_invoice = service.send(serviced_invoice)
+        sent_invoice.email_status
+    end
 
 
-
-
+    def add_line_items(items, invoice)
+        items.each do |item|
+            item_info = item[:itemInfo]
+            quantity = item[:quantity]
+            line_item = Quickbooks::Model::InvoiceLineItem.new
+            total_amount = item_info[:quantity].to_i * item_info[:price].to_f
+            line_item.amount = total_amount.round(2)
+            line_item.descritpion = item_info[:description]
+            line_item.sales_item! do |detail|
+                detail.unit_price = item_info[:price].to_f
+                detail.quantity = quantity.to_i
+                detail.item_id = item_info[:upc]
+            end
+            invoice.line_items << line_item
+        end
+        invoice
     end
 
  end
