@@ -9,7 +9,7 @@ class QuickbooksController < ApplicationController
         # }
         # oauth2_client = OAuth2::Client.new(ENV['OAUTH2_CLIENT_ID'], ENV['OAUTH2_CLIENT_SECRET'], oauth_params)
         redirect_uri = "https://montez-food-service-web.vercel.app/users/admin"
-        if resp = @oauth2_client.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
+        if resp = OAUTH2_CLIENT.auth_code.get_token(params[:code], redirect_uri: redirect_uri)
             puts "RESP------"
             puts resp
             render :json => {

@@ -19,7 +19,7 @@
         service_info = info_for_invoice[:service_info]
         customer_info = info_for_invoice[:customer_info]
         invoice_info = info_for_invoice[:invoice_info]
-        access_token = OAuth2::AccessToken.new(@oauth2_client, service_info[:access_token], refresh_token: service_info[:refresh_token])
+        access_token = OAuth2::AccessToken.new(OAUTH2_CLIENT, service_info[:access_token], refresh_token: service_info[:refresh_token])
 
         service = Quickbooks::Service::Invoice.new
         service.company_id = service_info[:realm_id]
