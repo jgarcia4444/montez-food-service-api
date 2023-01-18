@@ -10,12 +10,12 @@
     end
 
     def self.send_invoice(info_for_invoice)
-        oauth_params = {
-            site: "https://appcenter.intuit.com/connect/oauth2",
-            authorize_url: "https://appcenter.intuit.com/connect/oauth2",
-            token_url: "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
-        }
-        oauth2_client = OAuth2::Client.new(ENV['OAUTH2_CLIENT_ID'], ENV['OAUTH2_CLIENT_SECRET'], oauth_params)
+        # oauth_params = {
+        #     site: "https://appcenter.intuit.com/connect/oauth2",
+        #     authorize_url: "https://appcenter.intuit.com/connect/oauth2",
+        #     token_url: "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
+        # }
+        # oauth2_client = OAuth2::Client.new(ENV['OAUTH2_CLIENT_ID'], ENV['OAUTH2_CLIENT_SECRET'], oauth_params)
         service_info = info_for_invoice[:service_info]
         customer_info = info_for_invoice[:customer_info]
         invoice_info = info_for_invoice[:invoice_info]
@@ -29,6 +29,7 @@
         user = customer_info[:user]
         order_address = customer_info[:order_address]
         customer = nil
+        puts service.fetch_by_id(user.id.to_s) 
         if service.fetch_by_id(user.id.to_s)
             customer = service.fetch_by_id(user.id.to_s)
             address = Quickbooks::Model::PhysicalAddress.new
