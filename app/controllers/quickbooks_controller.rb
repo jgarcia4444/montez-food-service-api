@@ -11,7 +11,7 @@ class QuickbooksController < ApplicationController
         # redirect_uri = "https://montez-food-service-web.vercel.app/users/admin"
         redirect_uri = "https://montez-food-service-api.herokuapp.com/oauth/callback"
         grant_url = oauth2_client.auth_code.authorize_url(redirect_uri: redirect_uri, response_type: "code", state: SecureRandom.hex(12), scope: "com.intuit.quickbooks.accounting")
-        redirect_to grant_url
+        redirect_to grant_url, allow_other_host: true
     end
 
     def oauth_callback
