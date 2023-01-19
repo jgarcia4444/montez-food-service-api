@@ -64,7 +64,7 @@
         invoice.customer_id = customer.id
         invoice.txn_date = DateTime.current
         items = invoice_info[:items]
-        invoice_with_line_items = add_line_items(items, invoice)
+        invoice_with_line_items = Admin.add_line_items(items, invoice)
 
         invoice_service = Quickbooks::Service::Invoice.new
         invoice_service.company_id = service_info[:realm_id]
@@ -75,7 +75,7 @@
     end
 
 
-    def add_line_items(items, invoice)
+    def self.(items, invoice)
         items.each do |item|
             item_info = item[:itemInfo]
             quantity = item[:quantity]
