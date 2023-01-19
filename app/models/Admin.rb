@@ -75,7 +75,7 @@
     end
 
 
-    def self.(items, invoice)
+    def self.add_line_items(items, invoice)
         items.each do |item|
             item_info = item[:itemInfo]
             quantity = item[:quantity]
