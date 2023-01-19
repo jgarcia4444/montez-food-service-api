@@ -145,72 +145,52 @@ class AdminsController < ApplicationController
     def confirm_pending_order 
         if params[:confirmation_information]
             confirmation_information = params[:confirmation_information]
-            if confirmation_information[:delivery_date]
-                delivery_date = confirmation_information[:delivery_date]
-                if confirmation_information[:invoice_payable_date]
-                    invoice_payable_date = confirmation_information[:invoice_payable_date]
-                    if confirmation_information[:order_id]
-                        order_id = confirmation_information[:order_id]
-                        pending_order = PendingOrder.find_by(user_order_id: order_id)
-                        if pending_order
-                            if pending_order.destroy
-                                user_order = UserOrder.find_by(id: order_id)
-                                if user_order
-                                    order_address = Address.find_by(id: user_order.address_id)
-                                    if order_address
-                                        formatted_address = order_address.format_address
-                                        user_order_items = user_order.get_order_items
-                                        user = User.find_by(id: user_order.user_id)
-                                        if user
-                                            if params[:service_info]
-                                                service_info = params[:service_info]
-                                                if service_info[:realm_id]
-                                                    realm_id = service_info[:realm_id]
-                                                    if service_info[:access_token]
-                                                        access_token = service_info[:access_token]
-                                                        if service_info[:refresh_token]
-                                                            refresh_token = service_info[:refresh_token]
-                                                            info_for_invoice = {
-                                                                service_info: {
-                                                                    realm_id: realm_id, 
-                                                                    access_token: access_token,
-                                                                    refresh_token: refresh_token
-                                                                },
-                                                                customer_info: {
-                                                                    user: user,
-                                                                    order_address: order_address
-                                                                },
-                                                                invoice_info: {
-                                                                    items: user_order_items   
-                                                                }
-                                                            }
-                                                            invoice_email_status = Admin.send_invoice(info_for_invoice)
-                                                            if invoice_email_status == "EmailSent"
-                                                                render :json => {
-                                                                    success: true,
-                                                                    orderId: user_order.id
-                                                                }
-                                                            else
-                                                                render :json => {
-                                                                    success: false,
-                                                                    error: {
-                                                                        message: "There was an error sending the invoice through email."
-                                                                    }
-                                                                }
-                                                            end
-                                                        else
-                                                            render :json => {
-                                                                success: false,
-                                                                error: {
-                                                                    message: "Refresh token was not found."
-                                                                }
-                                                            }
-                                                        end
+            if confirmation_information[:order_id]
+                order_id = confirmation_information[:order_id]
+                pending_order = PendingOrder.find_by(user_order_id: order_id)
+                if pending_order
+                    if pending_order.destroy
+                        user_order = UserOrder.find_by(id: order_id)
+                        if user_order
+                            order_address = Address.find_by(id: user_order.address_id)
+                            if order_address
+                                formatted_address = order_address.format_address
+                                user_order_items = user_order.get_order_items
+                                user = User.find_by(id: user_order.user_id)
+                                if user
+                                    if params[:service_info]
+                                        service_info = params[:service_info]
+                                        if service_info[:realm_id]
+                                            realm_id = service_info[:realm_id]
+                                            if service_info[:access_token]
+                                                access_token = service_info[:access_token]
+                                                if service_info[:refresh_token]
+                                                    refresh_token = service_info[:refresh_token]
+                                                    info_for_invoice = {
+                                                        service_info: {
+                                                            realm_id: realm_id, 
+                                                            access_token: access_token,
+                                                            refresh_token: refresh_token
+                                                        },
+                                                        customer_info: {
+                                                            user: user,
+                                                            order_address: order_address
+                                                        },
+                                                        invoice_info: {
+                                                            items: user_order_items   
+                                                        }
+                                                    }
+                                                    invoice_email_status = Admin.send_invoice(info_for_invoice)
+                                                    if invoice_email_status == "EmailSent"
+                                                        render :json => {
+                                                            success: true,
+                                                            orderId: user_order.id
+                                                        }
                                                     else
                                                         render :json => {
                                                             success: false,
                                                             error: {
-                                                                message: "Access token was not found"
+                                                                message: "There was an error sending the invoice through email."
                                                             }
                                                         }
                                                     end
@@ -218,72 +198,47 @@ class AdminsController < ApplicationController
                                                     render :json => {
                                                         success: false,
                                                         error: {
-                                                            message: "Realm ID was not found."
+                                                            message: "Refresh token was not found."
                                                         }
                                                     }
                                                 end
-                                            else 
+                                            else
                                                 render :json => {
                                                     success: false,
                                                     error: {
-                                                        message: "The service info was not sent to the backend."
+                                                        message: "Access token was not found"
                                                     }
                                                 }
                                             end
-                                            
-                                            begin
-                                                order_info = {
-                                                    delivery_date: delivery_date,
-                                                    invoice_payable_date: invoice_payable_date,
-                                                    total_price: user_order.total_price,
-                                                    address: formatted_address,
-                                                    items: user_order_items,
-                                                    email: user.email,
-                                                }
-                                                UserNotifierMailer.pending_order_confirmation(order_info).deliver_now
-                                                render :json => {
-                                                    success: true,
-                                                    orderId: user_order.id,
-                                                }
-                                            rescue StandardError => e
-                                                render :json => {
-                                                    success: false,
-                                                    error: {
-                                                        message: "There was an error sending the confirmation email.",
-                                                        specificError: e.inspect
-                                                    }
-                                                }
-                                            end
-                                        else 
+                                        else
                                             render :json => {
                                                 success: false,
                                                 error: {
-                                                    message: "There was an error finding the user to send the confirmation email to."
+                                                    message: "Realm ID was not found."
                                                 }
                                             }
                                         end
-                                    else
+                                    else 
                                         render :json => {
                                             success: false,
                                             error: {
-                                                message: "There was an error finding the associated address with the user order."
+                                                message: "The service info was not sent to the backend."
                                             }
                                         }
                                     end
-                                else
+                                else 
                                     render :json => {
                                         success: false,
                                         error: {
-                                            message: "There was an error finding the user order with the given id."
+                                            message: "There was an error finding the user to send the confirmation email to."
                                         }
                                     }
                                 end
-                                
                             else
                                 render :json => {
                                     success: false,
                                     error: {
-                                        message: "There was an error attempting to delete the pending order."
+                                        message: "There was an error finding the associated address with the user order."
                                     }
                                 }
                             end
@@ -291,15 +246,16 @@ class AdminsController < ApplicationController
                             render :json => {
                                 success: false,
                                 error: {
-                                    message: "There was an error finding the pending order with the given information."
+                                    message: "There was an error finding the user order with the given id."
                                 }
                             }
                         end
+                        
                     else
                         render :json => {
                             success: false,
                             error: {
-                                message: "No order id was sent to confirm the pending order."
+                                message: "There was an error attempting to delete the pending order."
                             }
                         }
                     end
@@ -307,7 +263,7 @@ class AdminsController < ApplicationController
                     render :json => {
                         success: false,
                         error: {
-                            message: "No invoice payable date was sent to confirm the pending order."
+                            message: "There was an error finding the pending order with the given information."
                         }
                     }
                 end
@@ -315,7 +271,7 @@ class AdminsController < ApplicationController
                 render :json => {
                     success: false,
                     error: {
-                        message: "No delivery date information was sent to confirm the pending order."
+                        message: "No order id was sent to confirm the pending order."
                     }
                 }
             end
