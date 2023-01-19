@@ -32,16 +32,16 @@
         customer = nil
         puts "Test before errror!"
 
-        puts customer_service.fetch_by_id(user.id.to_s) 
-        if customer_service.fetch_by_id(user.id.to_s)
-            customer = customer_service.fetch_by_id(user.id.to_s)
-            address = Quickbooks::Model::PhysicalAddress.new
-            address.line1 = order_address.street
-            address.city = order_address.city
-            address.country_sub_division_code = order_address.state
-            address.postal_code = order_address.zip_code
-            customer.billing_address = address
-            customer_service.update(customer)
+        # puts customer_service.fetch_by_id(user.id.to_s) 
+        # if customer_service.fetch_by_id(user.id.to_s)
+        #     customer = customer_service.fetch_by_id(user.id.to_s)
+        #     address = Quickbooks::Model::PhysicalAddress.new
+        #     address.line1 = order_address.street
+        #     address.city = order_address.city
+        #     address.country_sub_division_code = order_address.state
+        #     address.postal_code = order_address.zip_code
+        #     customer.billing_address = address
+        #     customer_service.update(customer)
         else
             customer = Quickbooks::Model.Customer.new
             cusomer.id = user.id
