@@ -42,7 +42,7 @@
         #     address.postal_code = order_address.zip_code
         #     customer.billing_address = address
         #     customer_service.update(customer)
-        else
+        # else
             customer = Quickbooks::Model.Customer.new
             cusomer.id = user.id
             customer.company_name = user.company_name
@@ -58,7 +58,7 @@
             address.country_sub_division_code = order_address.state
             address.postal_code = order_address.zip_code
             customer.billing_address = address
-        end
+        # end
 
         invoice = Quickbooks::Model::Invoice.new
         invoice.customer_id = customer.id
