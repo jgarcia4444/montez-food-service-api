@@ -80,7 +80,7 @@
             item_info = item[:itemInfo]
             quantity = item[:quantity]
             line_item = Quickbooks::Model::InvoiceLineItem.new
-            total_amount = item_info[:quantity] * item_info[:price]
+            total_amount = quantity * item_info[:price]
             line_item.amount = total_amount
             line_item.description = item_info[:description]
             line_item.sales_item! do |detail|
