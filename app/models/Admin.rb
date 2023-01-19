@@ -47,7 +47,7 @@
             customer = Quickbooks::Model::Customer.new
             customer.company_name = user.company_name
             puts user.email
-            customer.email_address = Quickbooks::Model::EmailAddress.new(user.email)
+            customer.email_address = user.email
             puts customer.email_address
             customer.family_name = user.last_name
             customer.given_name = user.first_name
