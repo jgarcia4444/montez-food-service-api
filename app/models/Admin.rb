@@ -24,6 +24,8 @@
        
 
         customer_service = Quickbooks::Service::Customer.new
+        customer_service.company_id = service_info[:realm_id]
+        customer_service.access_token = access_token
 
         user = customer_info[:user]
         order_address = customer_info[:order_address]
