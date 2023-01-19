@@ -44,7 +44,7 @@
         #     customer_service.update(customer)
         # else
             customer = Quickbooks::Model::Customer.new
-            cusomer.id = user.id
+            customer.id = user.id
             customer.company_name = user.company_name
             customer.email_address = user.email_address
             customer.family_name = user.last_name
