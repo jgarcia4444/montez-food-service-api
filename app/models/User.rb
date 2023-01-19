@@ -85,12 +85,21 @@ class User < ApplicationRecord
             puts "User Order Address ID #{user_order.address_id}"
             past_order_address = Address.find_by(id: user_order.address_id)
             order_address = {
-                addressId: user_order.address_id,
-                street: past_order_address.street,
-                city: past_order_address.city,
-                state: past_order_address.state,
-                zipCode: past_order_address.zip_code,
+                addressId: "",
+                street: "",
+                city: "",
+                state: "",
+                zipCode: ""
             }
+            if past_order_address
+                order_address = {
+                    addressId: user_order.address_id,
+                    street: past_order_address.street,
+                    city: past_order_address.city,
+                    state: past_order_address.state,
+                    zipCode: past_order_address.zip_code,
+                }
+            end
             past_order = {
                 totalPrice: user_order.total_price,
                 orderDate: user_order.created_at,
