@@ -28,6 +28,7 @@
         customer_service.access_token = access_token
 
         user = customer_info[:user]
+        puts user
         order_address = customer_info[:order_address]
         customer = nil
         puts "Test before errror!"
@@ -45,6 +46,7 @@
         # else
             customer = Quickbooks::Model::Customer.new
             customer.company_name = user.company_name
+            puts user.email
             customer.email_address = user.email
             customer.family_name = user.last_name
             customer.given_name = user.first_name
