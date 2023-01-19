@@ -44,7 +44,6 @@
         #     customer_service.update(customer)
         # else
             customer = Quickbooks::Model::Customer.new
-            # customer.id = user.id
             customer.company_name = user.company_name
             customer.email_address = user.email
             customer.family_name = user.last_name
@@ -58,10 +57,12 @@
             address.country_sub_division_code = order_address.state
             address.postal_code = order_address.zip_code
             customer.billing_address = address
+            serviced_customer = customer_service.create(customer)
+            puts serviced_customer
         # end "7800005216"
 
         invoice = Quickbooks::Model::Invoice.new
-        invoice.customer_id = customer.id
+        invoice.customer_id = serviced_customer.id
         invoice.txn_date = DateTime.current
         items = invoice_info[:items]
         invoice_with_line_items = Admin.add_line_items(items, invoice)
