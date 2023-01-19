@@ -39,6 +39,7 @@ gem "bootsnap", require: false
 gem "rack-cors"
 
 gem 'quickbooks-ruby'
+gem 'rexml'
 
 
 group :development, :test do
