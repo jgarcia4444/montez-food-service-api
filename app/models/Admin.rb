@@ -58,7 +58,7 @@
             address.country_sub_division_code = order_address.state
             address.postal_code = order_address.zip_code
             customer.billing_address = address
-        # end
+        # end "7800005216"
 
         invoice = Quickbooks::Model::Invoice.new
         invoice.customer_id = customer.id
@@ -86,7 +86,7 @@
             line_item.sales_item! do |detail|
                 detail.unit_price = item_info[:price]
                 detail.quantity = quantity
-                detail.item_id = item_info[:upc]
+                # detail.item_id = item_info[:upc]
             end
             invoice.line_items << line_item
         end
