@@ -67,6 +67,7 @@
         invoice = Quickbooks::Model::Invoice.new
         invoice.txn_date = DateTime.current
         invoice.billing_email_address = user.email
+        invoice.customer_id = serviced_cutomer.id
         items = invoice_info[:items]
         invoice_with_line_items = Admin.add_line_items(items, invoice)
 
