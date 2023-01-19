@@ -46,7 +46,7 @@
             customer = Quickbooks::Model::Customer.new
             customer.id = user.id
             customer.company_name = user.company_name
-            customer.email_address = user.email_address
+            customer.email_address = user.email
             customer.family_name = user.last_name
             customer.given_name = user.first_name
             phone1 = Quickbooks::Model::TelephoneNumber.new
