@@ -21,26 +21,25 @@
         invoice_info = info_for_invoice[:invoice_info]
         access_token = OAuth2::AccessToken.new(OAUTH2_CLIENT, service_info[:access_token], refresh_token: service_info[:refresh_token])
 
-        service = Quickbooks::Service::Invoice.new
-        service.company_id = service_info[:realm_id]
-        service.access_token = access_token
+       
 
-        invoice = Quickbooks::Model::Invoice.new
+        customer_service = Quickbooks::Service::Customer.new
+
         user = customer_info[:user]
         order_address = customer_info[:order_address]
         customer = nil
         puts "Test before errror!"
-        puts service
-        puts service.fetch_by_id(user.id.to_s) 
-        if service.fetch_by_id(user.id.to_s)
-            customer = service.fetch_by_id(user.id.to_s)
+
+        puts customer_service.fetch_by_id(user.id.to_s) 
+        if customer_service.fetch_by_id(user.id.to_s)
+            customer = customer_service.fetch_by_id(user.id.to_s)
             address = Quickbooks::Model::PhysicalAddress.new
             address.line1 = order_address.street
             address.city = order_address.city
             address.country_sub_division_code = order_address.state
             address.postal_code = order_address.zip_code
             customer.billing_address = address
-            service.update(customer)
+            customer_service.update(customer)
         else
             customer = Quickbooks::Model.Customer.new
             cusomer.id = user.id
@@ -65,8 +64,11 @@
         items = invoice_info[:items]
         invoice_with_line_items = add_line_items(items, invoice)
 
-        serviced_invoice = service.create(invoice_with_line_items)
-        sent_invoice = service.send(serviced_invoice)
+        invoice_service = Quickbooks::Service::Invoice.new
+        invoice_service.company_id = service_info[:realm_id]
+        invoice_service.access_token = access_token
+        serviced_invoice = invoice_service.create(invoice_with_line_items)
+        sent_invoice = invoice_service.send(serviced_invoice)
         sent_invoice.email_status
     end
 
