@@ -47,7 +47,7 @@
             customer = Quickbooks::Model::Customer.new
             customer.company_name = user.company_name
             puts user.email
-            customer.email_address = user.email
+            customer.email_address = Quickbooks::Model::EmailAddress.new(user.email)
             customer.family_name = user.last_name
             customer.given_name = user.first_name
             phone1 = Quickbooks::Model::TelephoneNumber.new
@@ -64,8 +64,6 @@
         # end "7800005216"
 
         invoice = Quickbooks::Model::Invoice.new
-        invoice.customer_id = serviced_customer.id
-        invoice.wants_billing_email_sent!
         invoice.txn_date = DateTime.current
         invoice.billing_email_address = user.email
         items = invoice_info[:items]
