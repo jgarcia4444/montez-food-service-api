@@ -43,7 +43,7 @@
         #     customer.billing_address = address
         #     customer_service.update(customer)
         # else
-            customer = Quickbooks::Model.Customer.new
+            customer = Quickbooks::Model::Customer.new
             cusomer.id = user.id
             customer.company_name = user.company_name
             customer.email_address = user.email_address
