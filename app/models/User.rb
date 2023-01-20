@@ -109,14 +109,16 @@ class User < ApplicationRecord
                     zipCode: past_order_address.zip_code,
                 }
             else
-                split_address = user_order.split(", ")
-                order_address = {
-                    addressId: "",
-                    street: split_address[0],
-                    city: split_address[1],
-                    state: split_address[2],
-                    zipCode: split_address[3],
-                }
+                split_address = user_order.formatted_address.split(", ")
+                if split_address.count > 1
+                    order_address = {
+                        addressId: "",
+                        street: split_address[0],
+                        city: split_address[1],
+                        state: split_address[2],
+                        zipCode: split_address[3],
+                    }
+                end
             end
             past_order = {
                 totalPrice: user_order.total_price,
