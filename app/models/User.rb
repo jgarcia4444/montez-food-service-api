@@ -48,7 +48,7 @@ class User < ApplicationRecord
     def format_address(address_id)
         address = Address.find_by(id: address_id)
         if address
-            "#{adress.street}, #{address.city}, #{address.state}, #{address.zip_code}"
+            "#{address.street}, #{address.city}, #{address.state}, #{address.zip_code}"
         else
             ""
         end
@@ -91,9 +91,7 @@ class User < ApplicationRecord
         ordered_items = self.ordered_items 
         user_past_orders = user_orders.map do |user_order|
             specific_ordered_items = ordered_items.select {|ordered_item| ordered_item.user_order_id == user_order.id}
-            puts "User Order Address ID #{user_order.address_id}"
             past_order_address = Address.find_by(id: user_order.address_id)
-            puts past_order_address
             order_address = {
                 addressId: "",
                 street: "",
@@ -109,17 +107,6 @@ class User < ApplicationRecord
                     state: past_order_address.state,
                     zipCode: past_order_address.zip_code,
                 }
-            else
-                split_address = user_order.formatted_address.split(", ")
-                if split_address.count > 1
-                    order_address = {
-                        addressId: "",
-                        street: split_address[0],
-                        city: split_address[1],
-                        state: split_address[2],
-                        zipCode: split_address[3],
-                    }
-                end
             end
             past_order = {
                 totalPrice: user_order.total_price,
