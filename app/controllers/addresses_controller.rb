@@ -76,7 +76,7 @@ class AddressesController < ApplicationController
                         if address_destroyed
                             render :json => {
                                 success: true,
-                                locations: user.addresses
+                                addressId: address_destroyed.id
                             }
                         else
                             render :json => {
