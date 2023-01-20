@@ -93,6 +93,7 @@ class User < ApplicationRecord
             specific_ordered_items = ordered_items.select {|ordered_item| ordered_item.user_order_id == user_order.id}
             puts "User Order Address ID #{user_order.address_id}"
             past_order_address = Address.find_by(id: user_order.address_id)
+            puts past_order_address
             order_address = {
                 addressId: "",
                 street: "",
