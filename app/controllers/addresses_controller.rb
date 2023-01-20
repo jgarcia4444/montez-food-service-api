@@ -71,8 +71,10 @@ class AddressesController < ApplicationController
                             address_to_be_destroyed = address
                         end
                     end
+                    puts address_to_be_destroyed
                     if address_to_be_destroyed
                         address_to_be_destroyed.update(user_id: nil)
+                        address_to_be_destroyed.save
                         if address_to_be_destroyed.valid?
                             render :json => {
                                 success: true,
