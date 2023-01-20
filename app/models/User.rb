@@ -21,7 +21,7 @@ class User < ApplicationRecord
     def self.find_by_email(user_email)
         User.find_by(email: user_email)
     end
-#
+
     def create_user_order(order_info)
         items = order_info[:items]
         address_id = order_info[:address_id]
@@ -32,7 +32,7 @@ class User < ApplicationRecord
             item_total = quantity * item_price
             sum_total += item_total
         end
-        user_order = UserOrder.create(user_id: self.id, total_price: sum_total, address_id: address_id)
+        user_order = UserOrder.create(user_id: self.id, total_price: sum_total, address_id: address_id, formatted_address: self.format_address(address_id))
         if user_order.valid?
             user_order
         else
@@ -42,6 +42,15 @@ class User < ApplicationRecord
                     message: "There was an error while creating the user order."
                 }
             }
+        end
+    end
+
+    def format_address(address_id)
+        address = Address.find_by(id: address_id)
+        if address
+            "#{adress.street}, #{address.city}, #{address.state}, #{address.zip_code}"
+        else
+            ""
         end
     end
 
@@ -98,6 +107,15 @@ class User < ApplicationRecord
                     city: past_order_address.city,
                     state: past_order_address.state,
                     zipCode: past_order_address.zip_code,
+                }
+            else
+                split_address = user_order.split(", ")
+                order_address = {
+                    addressId: "",
+                    street: split_address[0],
+                    city: split_address[1],
+                    state: split_address[2],
+                    zipCode: split_address[3],
                 }
             end
             past_order = {
