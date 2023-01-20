@@ -72,8 +72,8 @@ class AddressesController < ApplicationController
                         end
                     end
                     if address_to_be_destroyed
-                        address_destroyed = address_to_be_destroyed.destroy
-                        if address_destroyed
+                        address_to_be_destroyed.update(user_id: nil)
+                        if address_to_be_destroyed.valid?
                             render :json => {
                                 success: true,
                                 locations: user.addresses
