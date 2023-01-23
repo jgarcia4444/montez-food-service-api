@@ -37,6 +37,24 @@ class UserOrder < ApplicationRecord
         end
     end
 
+    def order_items
+        
+        ordered_items = OrderedItem.all.select{|ordered_item| ordered_item.user_order_id == self.id}
+        ordered_items.map do |ordered_item|
+            order_item_id = ordered_item.order_item_id
+            order_item = OrderItem.find_by(id: order_item_id)
+            {
+                description: order_item.description,
+                upc: order_item.upc,
+                item: order_item.item,
+                price: order_item.price,
+                costPerUnit: order_item.cost_per_unit,
+                caseCost: order_item.case_cost,
+                fiveCaseCost: order_item.five_case_cost,
+            }
+        end
+    end
+
     def format_date
         self.created_at.to_fs(:long)
     end
