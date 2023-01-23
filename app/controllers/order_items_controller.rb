@@ -4,9 +4,9 @@ class OrderItemsController < ApplicationController
         if params[:item_query]
             item_query = params[:item_query]
             suggestions = []
-            if params[:user_id]
-                user_id = params[:user_id]
-                user = User.find_by(id: user_id)
+            if params[:email]
+                user_email = params[:email]
+                user = User.find_by(email: user_email)
                 if user 
                     user_orders = user.user_orders
                     if user_orders.count > 0

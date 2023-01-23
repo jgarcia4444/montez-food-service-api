@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   post "users/forgot-password/check-code", to: "users#check_code"
   patch "users/forgot-password/change-password", to: "users#change_password"
 
-  get 'order-online/fetch-suggestions/:item_query', to: "order_items#fetch_suggestions"
+  get 'order-online/fetch-suggestions/:item_query/:email', to: "order_items#fetch_suggestions"
 
   post 'order-online/orders', to: "user_orders#persist_order"
   post 'users/verify', to: "users#verify_user"
