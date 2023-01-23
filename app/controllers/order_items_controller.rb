@@ -6,9 +6,6 @@ class OrderItemsController < ApplicationController
             suggestions = []
             if params[:user_id]
                 user_id = params[:user_id]
-                
-                # first search through prreviously ordered_items and have these presented  
-                # towards the top
                 user = User.find_by(id: user_id)
                 if user 
                     user_orders = user.user_orders
@@ -35,7 +32,6 @@ class OrderItemsController < ApplicationController
                     }
                 end
             end
-            # Check all order_items after previously ordered items have been suggested
             OrderItem.all.each do |order_item|
                 if suggestions.count > 9
                     break

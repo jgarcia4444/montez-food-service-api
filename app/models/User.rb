@@ -55,35 +55,35 @@ class User < ApplicationRecord
     end
 
     def format_item(input_item_info)
-    if input_item_info[:quantity] == nil and input_item_info[:item_info] == nil
-        return {
-            quantity: "",
-            itemInfo: {
-                description: "",
-                upc: "",
-                item: "",
-                price: "",
-                costPerUnit: "",
-                caseCost: "",
-                fiveCaseCost: ""    
-            },
-        }
-    else
-        item_info = input_item_info[:item_info]
-        quantity = input_item_info[:quantity]
-        return {
-            quantity: quantity,
-            itemInfo: {
-                description: item_info.description,
-                upc: item_info.upc,
-                item: item_info.item,
-                price: item_info.price,
-                costPerUnit: item_info.cost_per_unit,
-                caseCost: item_info.case_cost,
-                fiveCaseCost: item_info.five_case_cost    
-            },
-        }
-    end
+        if input_item_info[:quantity] == nil and input_item_info[:item_info] == nil
+            return {
+                quantity: "",
+                itemInfo: {
+                    description: "",
+                    upc: "",
+                    item: "",
+                    price: "",
+                    costPerUnit: "",
+                    caseCost: "",
+                    fiveCaseCost: ""    
+                },
+            }
+        else
+            item_info = input_item_info[:item_info]
+            quantity = input_item_info[:quantity]
+            return {
+                quantity: quantity,
+                itemInfo: {
+                    description: item_info.description,
+                    upc: item_info.upc,
+                    item: item_info.item,
+                    price: item_info.price,
+                    costPerUnit: item_info.cost_per_unit,
+                    caseCost: item_info.case_cost,
+                    fiveCaseCost: item_info.five_case_cost    
+                },
+            }
+        end
     end
 
     def past_orders 
