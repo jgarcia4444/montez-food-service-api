@@ -23,6 +23,7 @@ class OrderItemsController < ApplicationController
                             end
                         end
                         puts "Previously ordered items in suggesstions"
+                        puts suggestions
                     end
                 else
                     render :json => {
@@ -44,6 +45,7 @@ class OrderItemsController < ApplicationController
                 end
             end
             puts "Suggestions after going theough items not previously ordered."
+            puts suggestions
             if suggestions.count > 0
                 render :json => {
                     success: true,
