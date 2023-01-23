@@ -4,36 +4,36 @@ class OrderItemsController < ApplicationController
         if params[:item_query]
             item_query = params[:item_query]
             suggestions = []
-            if params[:email]
-                user_email = params[:email]
-                user = User.find_by(email: user_email)
-                if user 
-                    user_orders = user.user_orders
-                    if user_orders.count > 0
-                        previously_ordered_items = []
-                        user_orders.each {|user_order| previously_ordered_items = previously_ordered_items + user_order.order_items}
-                        previously_ordered_items.each do |order_item|
-                            if suggestions.count > 9
-                                break
-                            else
-                                downcased_description = order_item.downcase
-                                if downcased_description.include?(item_query.downcase)
-                                    suggestions.push(order_item)
-                                end
-                            end
-                        end
-                        puts "Previously ordered items in suggesstions"
-                        puts suggestions
-                    end
-                else
-                    render :json => {
-                        success: false,
-                        error: {
-                            message: "No user found with the given id."
-                        }
-                    }
-                end
-            end
+            # if params[:email]
+            #     user_email = params[:email]
+            #     user = User.find_by(email: user_email)
+            #     if user 
+            #         user_orders = user.user_orders
+            #         if user_orders.count > 0
+            #             previously_ordered_items = []
+            #             user_orders.each {|user_order| previously_ordered_items = previously_ordered_items + user_order.order_items}
+            #             previously_ordered_items.each do |order_item|
+            #                 if suggestions.count > 9
+            #                     break
+            #                 else
+            #                     downcased_description = order_item.downcase
+            #                     if downcased_description.include?(item_query.downcase)
+            #                         suggestions.push(order_item)
+            #                     end
+            #                 end
+            #             end
+            #             puts "Previously ordered items in suggesstions"
+            #             puts suggestions
+            #         end
+            #     else
+            #         render :json => {
+            #             success: false,
+            #             error: {
+            #                 message: "No user found with the given id."
+            #             }
+            #         }
+            #     end
+            # end
             OrderItem.all.each do |order_item|
                 if suggestions.count > 9
                     break
