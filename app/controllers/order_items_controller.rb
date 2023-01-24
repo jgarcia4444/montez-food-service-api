@@ -9,6 +9,8 @@ class OrderItemsController < ApplicationController
                 user = User.find_by(email: user_email)
                 if user 
                     user_orders = user.user_orders
+                    puts "USER ORDERS"
+                    puts user_orders
                     if user_orders.count > 0
                         previously_ordered_items = []
                         user_orders.each {|user_order| previously_ordered_items = previously_ordered_items + user_order.order_items}
