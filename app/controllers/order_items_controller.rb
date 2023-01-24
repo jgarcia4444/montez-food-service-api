@@ -5,6 +5,7 @@ class OrderItemsController < ApplicationController
             item_query = params[:item_query]
             suggestions = []
             if params[:email]
+                puts "Email found!"
                 user_email = params[:email]
                 user = User.find_by(email: user_email)
                 if user 
