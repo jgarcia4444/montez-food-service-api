@@ -8,7 +8,7 @@ class OrderItemsController < ApplicationController
                 puts "Email found!"
                 user_email = params[:email]
                 user = User.find_by(email: user_email)
-                if user 
+                if user != nil
                     puts "USER FOUND!"
                     user_orders = user.user_orders
                     puts "USER ORDERS"
