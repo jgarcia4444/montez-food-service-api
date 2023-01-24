@@ -20,7 +20,7 @@ class OrderItemsController < ApplicationController
                             if suggestions.count > 9
                                 break
                             else
-                                downcased_description = order_item.downcase
+                                downcased_description = order_item.description.downcase
                                 if downcased_description.include?(item_query.downcase)
                                     suggestions.push(order_item)
                                 end
