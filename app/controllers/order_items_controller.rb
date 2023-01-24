@@ -9,6 +9,7 @@ class OrderItemsController < ApplicationController
                 user_email = params[:email]
                 user = User.find_by(email: user_email)
                 if user 
+                    puts "USER FOUND!"
                     user_orders = user.user_orders
                     puts "USER ORDERS"
                     puts user_orders
@@ -29,6 +30,7 @@ class OrderItemsController < ApplicationController
                         puts suggestions
                     end
                 else
+                    puts "USER NOT FOUND"
                     render :json => {
                         success: false,
                         error: {
