@@ -63,7 +63,7 @@ class User < ApplicationRecord
                     upc: "",
                     item: "",
                     price: "",
-                    costPerUnit: "",
+                    unitsPerCase: "",
                     caseCost: "",
                     fiveCaseCost: ""    
                 },
@@ -78,7 +78,7 @@ class User < ApplicationRecord
                     upc: item_info.upc,
                     item: item_info.item,
                     price: item_info.price,
-                    costPerUnit: item_info.cost_per_unit,
+                    unitsPerCase: item_info.units_per_case,
                     caseCost: item_info.case_cost,
                     fiveCaseCost: item_info.five_case_cost    
                 },
