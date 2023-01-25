@@ -7,7 +7,7 @@ class UserOrder < ApplicationRecord
     def persist_ordered_items(items)
         items.each do |item|
             order_item_id = OrderItem.find_by(description: item["description"]).id
-            ordered_item = OrderedItem.create(order_item_id: order_item_id, quantity: item["quantity"].to_i, user_order_id: self.id)
+            ordered_item = OrderedItem.create(order_item_id: order_item_id, quantity: item["quantity"].to_i, user_order_id: self.id, case_bought: item[:case_bought])
             if ordered_item.valid? == false
                 render :json => {
                     success: false,
