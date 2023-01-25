@@ -83,7 +83,7 @@ class OrderItemsController < ApplicationController
             upc: order_item.upc,
             item: order_item.item,
             price: order_item.price,
-            costPerUnit: order_item.cost_per_unit,
+            unitsPerCase: order_item.units_per_case,
             caseCost: order_item.case_cost,
             fiveCaseCost: order_item.five_case_cost,
         }
