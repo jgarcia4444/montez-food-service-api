@@ -27,10 +27,7 @@ class User < ApplicationRecord
         address_id = order_info[:address_id]
         sum_total = 0.00
         items.each do |item|
-            item_price = item["price"].to_f
-            quantity = item["quantity"].to_i
-            item_total = quantity * item_price
-            sum_total += item_total
+            sum_total += item[:totalPrice].to_f
         end
         user_order = UserOrder.create(user_id: self.id, total_price: sum_total, address_id: address_id, formatted_address: self.format_address(address_id))
         if user_order.valid?
