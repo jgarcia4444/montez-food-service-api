@@ -16,7 +16,7 @@ product_list_csv.each_with_index do |product, i|
             description: product[2],
             dept: product[3],
             price: product[4],
-            cost_per_unit: product[5],
+            units_per_case: product[5],
             case_cost: product[6],
             five_case_cost: product[7],
         )
