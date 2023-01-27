@@ -9,6 +9,8 @@ class UserOrdersController < ApplicationController
                     if order_info[:items]
                         user_email = user_info[:email]
                         items = order_info[:items]
+                        puts "Here are the order items"
+                        items.each {|item| puts item}
                         user = User.find_by_email(user_email)
                         if user
                             if params[:address_info]
