@@ -15,12 +15,12 @@
             </tr>
             <% @order_info[:items].as_json.each do |item| %>
                 <% 
-                    item_total_price = item["price"] * item["quantity"].to_f
+                    item_total_price = item["price"].to_f * item["quantity"].to_f
                 %>
                 <tr>
                     <td><%= item["description"] %></td>
                     <td><%= item["quantity"] %></td>
-                    <td>$<%= item["price"].round(2) %></td>
+                    <td>$<%= item["price"].to_f.round(2) %></td>
                     <td>$<%= item_total_price.round(2) %></td>
                 </tr>
             <% end %>

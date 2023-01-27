@@ -45,7 +45,7 @@ class UserOrdersController < ApplicationController
                                     }
                                     past_order_info = {
                                         totalPrice: user_order.total_price,
-                                        items: items,
+                                        items: format_items(items),
                                         orderDate: user_order.created_at,
                                         orderAddress: address,
                                     }
@@ -123,5 +123,20 @@ class UserOrdersController < ApplicationController
             }
         end
     end
+
+    private
+        def format_items(items)
+            items.map do |item|
+                {
+                    quantity: item[:quantity],
+                    itemInfo: {
+                        description: item[:description], 
+                        price: item[:price], 
+                        caseBought: item[:caseBought], 
+                        caseCost: item[:caseCost],
+                    }
+                }
+            end
+        end
 
 end
