@@ -62,7 +62,8 @@ class User < ApplicationRecord
                     price: "",
                     unitsPerCase: "",
                     caseCost: "",
-                    fiveCaseCost: ""    
+                    fiveCaseCost: "",
+                    caseBought: nil
                 },
             }
         else
@@ -77,7 +78,8 @@ class User < ApplicationRecord
                     price: item_info.price,
                     unitsPerCase: item_info.units_per_case,
                     caseCost: item_info.case_cost,
-                    fiveCaseCost: item_info.five_case_cost    
+                    fiveCaseCost: item_info.five_case_cost,
+                    caseBought: item_info.case_bought    
                 },
             }
         end
