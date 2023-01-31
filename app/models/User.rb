@@ -51,7 +51,7 @@ class User < ApplicationRecord
         end
     end
 
-    def format_item(input_item_info)
+    def format_item(input_item_info, case_bought)
         if input_item_info[:quantity] == nil and input_item_info[:item_info] == nil
             return {
                 quantity: "",
@@ -63,7 +63,7 @@ class User < ApplicationRecord
                     unitsPerCase: "",
                     caseCost: "",
                     fiveCaseCost: "",
-                    caseBought: nil
+                    caseBought: false
                 },
             }
         else
@@ -79,7 +79,7 @@ class User < ApplicationRecord
                     unitsPerCase: item_info.units_per_case,
                     caseCost: item_info.case_cost,
                     fiveCaseCost: item_info.five_case_cost,
-                    caseBought: item_info.case_bought    
+                    caseBought: case_bought    
                 },
             }
         end
@@ -130,12 +130,13 @@ class User < ApplicationRecord
                     quantity: nil,
                     itemInfo: nil,
                 }
+                case_bought = ordered_item.case_bought
                 if order_item
                     info_to_format[:quantity] = specific_ordered_item.quantity
                     info_to_format[:item_info] = order_item
-                    formatted_item = format_item(info_to_format)
+                    formatted_item = format_item(info_to_format, case_bought)
                 else
-                    formatted_item = format_item(info_to_format)
+                    formatted_item = format_item(info_to_format, case_bought)
                 end
                 formatted_item
             end
