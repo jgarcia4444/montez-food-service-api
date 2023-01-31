@@ -130,7 +130,7 @@ class User < ApplicationRecord
                     quantity: nil,
                     itemInfo: nil,
                 }
-                case_bought = ordered_item.case_bought
+                case_bought = specific_ordered_item.case_bought
                 if order_item
                     info_to_format[:quantity] = specific_ordered_item.quantity
                     info_to_format[:item_info] = order_item
