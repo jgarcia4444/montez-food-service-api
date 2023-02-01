@@ -98,4 +98,129 @@ class PendingOrdersController < ApplicationController
         end
     end
 
+    def update_order
+        if params[:admin_info]
+            admin_info = params[:admin_info]
+            if admin_info[:username]
+                username = admin_info[:username]
+                admin = Admin.find_by(username: username)
+                if admin
+                    if params[:user_order_id]
+                        user_order_id = params[:user_order_id]
+                        user_order = UserOrder.find_by(id: user_order_id)
+                        if user_order
+                            if params[:order_item_info]
+                                order_item_info = params[:order_item_info]
+                                if order_item_info[:order_item_id]
+                                    order_item_id = order_item_info[:order_item_id]
+                                    order_item = OrderItem.find_by(id: order_item_id)
+                                    if order_item
+                                        if order_item_info[:quantity]
+                                            quantity = order_item_info[:quantity]
+                                            if order_item_info[:price]
+                                                price = order_item_info[:price]
+                                                if order_item_info[:case_cost]
+                                                    case_cost = order_item_info[:case_cost]
+                                                    if params[:case_bought]
+                                                        case_bought = params[:case_bought]
+                                                        
+                                                    else
+                                                        render :json => {
+                                                            success: false,
+                                                            error: {
+                                                                message: "The case bought parameter was not sent along with the request."
+                                                            }
+                                                        }
+                                                    end
+                                                else
+                                                    render :json => {
+                                                        success: false,
+                                                        error: {
+                                                            message: "The case cost was not sent with the request."
+                                                        }
+                                                    }
+                                                end
+                                            else
+                                                render :json => {
+                                                    success: false,
+                                                    error: {
+                                                        message: "The price was not sent along with the request."
+                                                    }
+                                                }
+                                            end
+                                        else
+                                            render :json => {
+                                                success: false,
+                                                error: {
+                                                    message: "The quantity for the order item was not sent with the request."
+                                                }
+                                            }
+                                        end
+                                    else
+                                        render :json => {
+                                            success: false,
+                                            error: {
+                                                message: "An order item was not found with the given id."
+                                            }
+                                        }
+                                    end
+                                else
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "The order item id was not sent along with the request."
+                                        }
+                                    }
+                                end
+
+                            else
+                                render :json => {
+                                    success: false,
+                                    error: {
+                                        message: "Order item info was not sent to update the order item."
+                                    }
+                                }
+                            end
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "A user order was not found with the given id."
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "The user order id was not sent with the request"
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "The admin was not found with the given information."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "The correct admin information was not sent with the request"
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "Admin info was not sent with the request."
+                }
+            }
+        end
+    end
+
 end
