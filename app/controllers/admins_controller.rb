@@ -180,8 +180,8 @@ class AdminsController < ApplicationController
                                                             items: user_order_items   
                                                         }
                                                     }
-                                                    invoice_email_status = Admin.send_invoice(info_for_invoice)
-                                                    if invoice_email_status == "EmailSent"
+                                                invoice_created = Admin.send_invoice(info_for_invoice)
+                                                    if invoice_created == true
                                                         render :json => {
                                                             success: true,
                                                             orderId: user_order.id
@@ -190,7 +190,7 @@ class AdminsController < ApplicationController
                                                         render :json => {
                                                             success: false,
                                                             error: {
-                                                                message: "There was an error sending the invoice through email."
+                                                                message: "There was an error creating the invoice through email."
                                                             }
                                                         }
                                                     end
