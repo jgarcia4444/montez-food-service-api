@@ -31,6 +31,9 @@ class UserOrder < ApplicationRecord
                     description: order_item.description,
                     upc: order_item.upc,
                     price: order_item.price,
+                    caseBought: ordered_item.case_bought,
+                    caseCost: order_item.case_cost,
+                    unitsPerCase: order_item.units_per_case
                 }
             }
         end
