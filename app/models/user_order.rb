@@ -33,7 +33,8 @@ class UserOrder < ApplicationRecord
                     price: order_item.price,
                     caseBought: ordered_item.case_bought,
                     caseCost: order_item.case_cost,
-                    unitsPerCase: order_item.units_per_case
+                    unitsPerCase: order_item.units_per_case,
+                    id: order_item.id,
                 }
             }
         end
