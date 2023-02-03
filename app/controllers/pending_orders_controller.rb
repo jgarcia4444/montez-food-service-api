@@ -106,29 +106,75 @@ class PendingOrdersController < ApplicationController
                 admin = Admin.find_by(username: username)
                 if admin
                     if params[:user_order_id]
-                        user_order_id = params[:user_order_id]
+                        user_order_id = params[:user_order_id].to_i
                         user_order = UserOrder.find_by(id: user_order_id)
                         if user_order
                             if params[:order_item_info]
                                 order_item_info = params[:order_item_info]
                                 if order_item_info[:order_item_id]
-                                    order_item_id = order_item_info[:order_item_id]
+                                    order_item_id = order_item_info[:order_item_id].to_i
                                     order_item = OrderItem.find_by(id: order_item_id)
                                     if order_item
                                         if order_item_info[:quantity]
-                                            quantity = order_item_info[:quantity]
+                                            quantity = order_item_info[:quantity].to_i
                                             if order_item_info[:price]
-                                                price = order_item_info[:price]
+                                                price = order_item_info[:price].to_f
                                                 if order_item_info[:case_cost]
-                                                    case_cost = order_item_info[:case_cost]
-                                                    if params[:case_bought]
-                                                        case_bought = params[:case_bought]
-                                                        
+                                                    case_cost = order_item_info[:case_cost].to_f
+                                                    case_bought = params[:case_bought]
+                                                    ordered_item = OrderedItem.find_by(user_order_id: user_order_id, order_item_id: order_item_id)
+                                                    if ordered_item
+                                                        if ordered_item.quantity != quantity
+                                                            ordered_item.update(quanity: quantity)
+                                                            if ordered_item.valid? == false
+                                                                render :json => {
+                                                                    success: false,
+                                                                    error: {
+                                                                        message: "Something went wrong while trying to update the quantity."
+                                                                    }
+                                                                }
+                                                            end
+                                                        end
                                                     else
                                                         render :json => {
-                                                            success: false,
+                                                            sucess: false,
                                                             error: {
-                                                                message: "The case bought parameter was not sent along with the request."
+                                                                message: "The record was unavailable to update the quantity."
+                                                            }
+                                                        }
+                                                    end
+                                                    order_item.update(price: price, case_cost: case_cost)
+                                                    if order_item.valid?
+                                                        total_price_updated = user_order.update_total_price
+                                                        if total_price_updated
+                                                            render :json => {
+                                                                success: true,
+                                                                totalPrice: user_order.total_price,
+                                                                orderItemInfo: {
+                                                                    quantity: ordered_item.quantity,
+                                                                    itemInfo: {
+                                                                        description: order_item.description,
+                                                                        upc: order_item.upc,
+                                                                        price: order_item.price,
+                                                                        caseBought: ordered_item.case_bought,
+                                                                        caseCost: order_item.case_cost,
+                                                                        unitsPerCase: order_item.units_per_case,
+                                                                        id: order_item.id,
+                                                                    }
+                                                                }
+                                                            }
+                                                        else
+                                                            render :json => {
+                                                                success: false,
+                                                                error: {
+                                                                    message: "There was an error updating the total price of the user order."
+                                                                }
+                                                            }
+                                                        end
+                                                    else
+                                                        render :json => {
+                                                            success: {
+                                                                message: "Pricing information was unable to be saved to update the item."
                                                             }
                                                         }
                                                     end
