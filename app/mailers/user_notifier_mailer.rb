@@ -8,6 +8,8 @@ class UserNotifierMailer < ApplicationMailer
     end
 
     def send_order_confirmation(order_info, user_email)
+        puts "Order info from the send order confirmation mailer action."
+        puts order_info
         @order_info = order_info
         @configured_address = "#{@order_info[:orderAddress][:street]}, #{@order_info[:orderAddress][:city]}, #{@order_info[:orderAddress][:state]}, #{@order_info[:orderAddress][:zip_code]}"
         mail to: user_email, subject: "Order Received"
