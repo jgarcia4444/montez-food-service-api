@@ -13,6 +13,12 @@ class UserNotifierMailer < ApplicationMailer
         mail to: user_email, subject: "Order Received"
     end
 
+    def send_order_alert(order_info)
+        @order_info = order_info
+        # mail to: "montezfoodservice@gmail.com" subject: "New Order Received"
+        mail to: "jgarciadev4444@gmail.com", subject: "New Order Received"
+    end
+
     def pending_order_confirmation(order_info)
         @order_info = order_info
         mail to: order_info[:email], subject: "Order Confirmed"

@@ -49,10 +49,24 @@ class UserOrdersController < ApplicationController
                                         orderDate: user_order.created_at,
                                         orderAddress: address,
                                     }
-                                    puts "Past order info -------"
-                                    puts past_order_info
                                     begin 
                                         UserNotifierMailer.send_order_confirmation(past_order_info, user_email).deliver_now
+                                        
+                                    rescue StandardError => e
+                                        render :json => {
+                                            success: false,
+                                            error: {
+                                                message: "There was an error sending the order confirmation email",
+                                                specificError: e.inspect
+                                            }
+                                        }
+                                    end
+                                    montez_new_order_info = {
+                                        total_price: user_order.total_price,
+                                        company_name: user.company_name,
+                                    }
+                                    begin
+                                        UserNotifierMailer.send_order_alert(montez_new_order_info).deliver_now
                                         render :json => {
                                             success: true,
                                             pastOrder: past_order_info
@@ -61,7 +75,7 @@ class UserOrdersController < ApplicationController
                                         render :json => {
                                             success: false,
                                             error: {
-                                                message: "There was an error sending the order confirmation email",
+                                                message: "There was an error sending the new order received email.",
                                                 specificError: e.inspect
                                             }
                                         }
