@@ -66,7 +66,7 @@ class UserOrder < ApplicationRecord
         ordered_items = self.ordered_items
         sum_total = 0.00
         ordered_items.each do |ordered_item|
-            order_item = OrderItem.find_by(id: item.order_item_id)
+            order_item = OrderItem.find_by(id: ordered_item.order_item_id)
             if order_item
                 item_price = ordered_item.case_bought == true ? order_item.case_cost : order_item.price
                 item_total = item_price * ordered_item.quantity
