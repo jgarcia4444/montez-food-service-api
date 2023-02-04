@@ -180,7 +180,7 @@ class AdminsController < ApplicationController
                                                             items: user_order_items   
                                                         }
                                                     }
-                                                invoice_created = Admin.send_invoice(info_for_invoice)
+                                                    invoice_created = Admin.send_invoice(info_for_invoice)
                                                     if invoice_created == true
                                                         render :json => {
                                                             success: true,
