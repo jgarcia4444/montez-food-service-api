@@ -42,7 +42,7 @@
             user.update(quickbooks_id: customer.id)
             if user.valid? == false
                 render :json => {
-                    success: false.
+                    success: false,
                     error: {
                         message: "There was an error adding the quickbooks_id to the user record."
                     }
