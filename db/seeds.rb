@@ -19,6 +19,7 @@ product_list_csv.each_with_index do |product, i|
             units_per_case: product[5],
             case_cost: product[6],
             five_case_cost: product[7],
+            quickbooks_id: "",
         )
     end
 end
