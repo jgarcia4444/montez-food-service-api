@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_25_032830) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_04_072432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_25_032830) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "units_per_case", default: 0
+    t.string "quickbooks_id", default: ""
   end
 
   create_table "ordered_items", force: :cascade do |t|
@@ -106,6 +107,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_25_032830) do
     t.string "last_name", default: ""
     t.string "phone_number", default: ""
     t.integer "address_id"
+    t.string "quickbooks_id", default: ""
   end
 
 end
