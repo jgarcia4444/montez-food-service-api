@@ -1,6 +1,8 @@
 
 class AdminsController < ApplicationController
     def login
+        puts "Admin login action reached"
+        puts params
         if params[:admin] 
             admin = params[:admin]
             if admin[:username] and admin[:password]
