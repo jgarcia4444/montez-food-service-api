@@ -95,7 +95,7 @@
             price = case_bought == true ? item_info[:case_cost] : item_info[:price]
             total_amount = quantity * price
             line_item.amount = total_amount
-            name = case_bought == true ? "#{item_info[:description]} #{item_info[:unitsPerCase] units}" : item_info[:description]
+            name = case_bought == true ? "#{item_info[:description]} #{item_info[:unitsPerCase]} units" : item_info[:description]
             line_item.description = name
             line_item.sales_item! do |detail|
                 detail.unit_price = price
