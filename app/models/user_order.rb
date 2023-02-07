@@ -36,7 +36,8 @@ class UserOrder < ApplicationRecord
                     unitsPerCase: order_item.units_per_case,
                     id: order_item.id,
                     quickbooks_id: order_item.quickbooks_id
-                }
+                },
+                caseBought: ordered_item.case_bought
             }
         end
     end

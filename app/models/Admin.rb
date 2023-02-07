@@ -90,14 +90,16 @@
         items.each do |item|
             item_info = item[:itemInfo]
             quantity = item[:quantity]
+            case_bought = item[:case_bought]
             line_item = Quickbooks::Model::InvoiceLineItem.new
-            total_amount = quantity * item_info[:price]
+            price = case_bought == true ? item_info[:case_cost] : item_info[:price]
+            total_amount = quantity * price
             line_item.amount = total_amount
-            line_item.description = item_info[:description]
+            name = case_bought == true ? "#{item_info[:description]} #{item_info[:unitsPerCase] units}" : item_info[:description]
+            line_item.description = name
             line_item.sales_item! do |detail|
-                detail.unit_price = item_info[:price]
+                detail.unit_price = price
                 detail.quantity = quantity
-                # detail.item_id = item_info[:upc]
             end
             invoice.line_items << line_item
         end
