@@ -5,14 +5,10 @@ class OrderItemsController < ApplicationController
             item_query = params[:item_query]
             suggestions = []
             if params[:email]
-                puts "Email found!"
                 user_email = params[:email]
                 user = User.find_by(email: "#{user_email}.com")
                 if user != nil
-                    puts "USER FOUND!"
                     user_orders = user.user_orders
-                    puts "USER ORDERS"
-                    puts user_orders
                     if user_orders.count > 0
                         previously_ordered_items = []
                         user_orders.each {|user_order| previously_ordered_items = previously_ordered_items + user_order.order_items}
@@ -26,17 +22,7 @@ class OrderItemsController < ApplicationController
                                 end
                             end
                         end
-                        puts "Previously ordered items in suggesstions"
-                        puts suggestions
                     end
-                else
-                    puts "USER NOT FOUND"
-                    render :json => {
-                        success: false,
-                        error: {
-                            message: "No user found with the given id."
-                        }
-                    }
                 end
             end
             OrderItem.all.each do |order_item|
@@ -49,8 +35,6 @@ class OrderItemsController < ApplicationController
                     end
                 end
             end
-            puts "Suggestions after going theough items not previously ordered."
-            puts suggestions
             if suggestions.count > 0
                 render :json => {
                     success: true,
