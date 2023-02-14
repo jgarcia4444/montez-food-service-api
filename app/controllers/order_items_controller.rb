@@ -59,7 +59,36 @@ class OrderItemsController < ApplicationController
     end
 
     def update_items
-        
+        if params[:items]
+            items = params[:items]
+            if items.count > 0
+                order_items_updated = OrderItem.update_items_bulk(items)
+                if order_items_updated === true
+                    render :json => {
+                        success: true,
+                    }
+                else
+                    error_message = order_items_updated.message
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: error_message,
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: true,
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "No items were sent to be updated."
+                }
+            }
+        end
     end
 
     
