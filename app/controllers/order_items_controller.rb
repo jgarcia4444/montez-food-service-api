@@ -63,17 +63,21 @@ class OrderItemsController < ApplicationController
             items = params[:items]
             if items.count > 0
                 order_items_updated = OrderItem.update_items_bulk(items)
-                if order_items_updated === true
+                if order_items_updated.message == nil
+                    items_updated = order_items_updated.items_updated
                     render :json => {
                         success: true,
+                        itemsUpdated: items_updated,
                     }
                 else
                     error_message = order_items_updated.message
+                    items_updated = order_items_updated.items_updated
                     render :json => {
                         success: false,
                         error: {
                             message: error_message,
-                        }
+                        },
+                        itemsUpdated: items_updated,
                     }
                 end
             else

@@ -1,6 +1,7 @@
 class OrderItem < ApplicationRecord
 
     def self.update_items_bulk(items)
+        items_updated = []
         items.each do |item|
             order_item = OrderItem.find_by(description: item[:description])
             if order_item
@@ -13,14 +14,21 @@ class OrderItem < ApplicationRecord
                             errors: order_item.errors.full_messages,
                         }
                     }
+                else
+                    items_updated.append(item)
                 end
             else
                 return {
-                    message: "A corresponding order item was not found with the name #{item[:description]}"
+                    message: "A corresponding order item was not found with the name #{item[:description]}",
+                    items_updated: items_updated,
                 }
             end
         end
-        true
+        {
+            message: nil,
+            items_updated: items_updated
+        }
+        
     end
 
 end
