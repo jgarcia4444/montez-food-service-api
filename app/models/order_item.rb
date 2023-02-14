@@ -6,7 +6,7 @@ class OrderItem < ApplicationRecord
             order_item = OrderItem.find_by(description: item[:description])
             if order_item
                 order_item.update(price: item[:price].to_f, case_cost: item[:case_cost].to_f, units_per_case: item[:units_per_case].to_i)
-                if order_item.valid == false
+                if order_item.valid? == false
                     render :json => {
                         success: false,
                         error: {
