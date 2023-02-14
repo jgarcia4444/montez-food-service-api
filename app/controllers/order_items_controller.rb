@@ -58,6 +58,10 @@ class OrderItemsController < ApplicationController
         end
     end
 
+    def update_items
+        
+    end
+
     
 
     private

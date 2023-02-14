@@ -34,5 +34,6 @@ Rails.application.routes.draw do
   post 'oauth/callback', to: "quickbooks#oauth_callback"
 
   put 'pending-order/update', to: "pending_orders#update_order"
+  put 'order-items/update-items', to: "order_items#update_items"
 
 end
