@@ -6,19 +6,21 @@ class OrderItemsController < ApplicationController
             suggestions = []
             if params[:email]
                 user_email = params[:email]
-                user = User.find_by(email: "#{user_email}.com")
-                if user != nil
-                    user_orders = user.user_orders
-                    if user_orders.count > 0
-                        previously_ordered_items = []
-                        user_orders.each {|user_order| previously_ordered_items = previously_ordered_items + user_order.order_items}
-                        previously_ordered_items.each do |order_item|
-                            if suggestions.count > 9
-                                break
-                            else
-                                downcased_description = order_item[:description].downcase
-                                if downcased_description.include?(item_query.downcase)
-                                    suggestions.push(order_item)
+                if user_email != "not_logged_in"
+                    user = User.find_by(email: "#{user_email}.com")
+                    if user != nil
+                        user_orders = user.user_orders
+                        if user_orders.count > 0
+                            previously_ordered_items = []
+                            user_orders.each {|user_order| previously_ordered_items = previously_ordered_items + user_order.order_items}
+                            previously_ordered_items.each do |order_item|
+                                if suggestions.count > 9
+                                    break
+                                else
+                                    downcased_description = order_item[:description].downcase
+                                    if downcased_description.include?(item_query.downcase)
+                                        suggestions.push(order_item)
+                                    end
                                 end
                             end
                         end
