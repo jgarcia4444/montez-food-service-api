@@ -71,7 +71,7 @@ Rails.application.configure do
     port: 587,
     domain:'gmail.com',
     user_name: 'montez.food.service.auth@gmail.com',
-    password: 'wrfbezohtyphuexr',
+    password: "vjgdmwcmzrhsmeaf",
     authentication: 'plain',
 }
 end
