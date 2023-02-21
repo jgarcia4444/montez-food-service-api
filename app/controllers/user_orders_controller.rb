@@ -58,6 +58,7 @@ class UserOrdersController < ApplicationController
                                     rescue StandardError => e
                                         puts "There was an error sending the email"
                                         puts "------------------------------------"
+                                        puts e.inspect
                                         render :json => {
                                             success: false,
                                             error: {
