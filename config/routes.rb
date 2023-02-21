@@ -36,4 +36,6 @@ Rails.application.routes.draw do
   put 'pending-order/update', to: "pending_orders#update_order"
   put 'order-items/update-items', to: "order_items#update_items"
 
+  post "admin/user-order/alert", to: "user_orders#send_order_alert"
+
 end
