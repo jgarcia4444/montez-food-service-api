@@ -51,14 +51,7 @@ class UserOrdersController < ApplicationController
                                     begin 
                                         puts "Order Confirmation about to send! ----"
                                         UserNotifierMailer.send_order_confirmation(past_order_info, user_email).deliver_now
-                                        render :json => {
-                                            success: true,
-                                            pastOrder: past_order_info
-                                        }
                                     rescue StandardError => e
-                                        puts "There was an error sending the email"
-                                        puts "------------------------------------"
-                                        puts e.inspect
                                         render :json => {
                                             success: false,
                                             error: {
