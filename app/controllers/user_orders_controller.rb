@@ -67,6 +67,26 @@ class UserOrdersController < ApplicationController
                                             }
                                         }
                                     end
+                                    montez_new_order_info = {
+                                        total_price: user_order.total_price,
+                                        company_name: user.company_name,
+                                    }
+                                    begin
+                                        UserNotifierMailer.send_order_alert(montez_new_order_info).deliver_now
+                                        puts "Order Alert Sent! ----"
+                                        render :json => {
+                                            success: true,
+                                            pastOrder: past_order_info
+                                        }
+                                    rescue StandardError => e
+                                        render :json => {
+                                            success: false,
+                                            error: {
+                                                message: "There was an error sending the order alert email.",
+                                                specificError: e.inspect
+                                            }
+                                        }
+                                    end
                                 else 
                                     render :json => {
                                         success: false,
@@ -125,48 +145,29 @@ class UserOrdersController < ApplicationController
         end
     end
 
-    def send_order_alert
-        if params[:total_price] 
-            total_price = params[:total_price]
-            if params[:company_name]
-                company_name = params[:company_name]
-                montez_new_order_info = {
-                    total_price: user_order.total_price,
-                    company_name: user.company_name,
-                }
-                begin
-                    UserNotifierMailer.send_order_alert(montez_new_order_info).deliver_now
-                    puts "Order Alert Sent! ----"
-                    render :json => {
-                        success: true,
-                        pastOrder: past_order_info
-                    }
-                rescue StandardError => e
-                    render :json => {
-                        success: false,
-                        error: {
-                            message: "There was an error sending the order alert email.",
-                            specificError: e.inspect
-                        }
-                    }
-                end
-            else
-                render :json => {
-                    success: false,
-                    error: {
-                        message: "The company name must be sent to make this request work."
-                    }
-                }
-            end
-        else
-            render :json => {
-                success: false,
-                error: {
-                    message: "The total price of the order must be sent to make this request work"
-                }
-            }
-        end
-    end
+    # def send_order_alert
+    #     if params[:total_price] 
+    #         total_price = params[:total_price]
+    #         if params[:company_name]
+    #             company_name = params[:company_name]
+               
+    #         else
+    #             render :json => {
+    #                 success: false,
+    #                 error: {
+    #                     message: "The company name must be sent to make this request work."
+    #                 }
+    #             }
+    #         end
+    #     else
+    #         render :json => {
+    #             success: false,
+    #             error: {
+    #                 message: "The total price of the order must be sent to make this request work"
+    #             }
+    #         }
+    #     end
+    # end
 
     private
         def format_items(items)
