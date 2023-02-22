@@ -85,4 +85,29 @@ class UserOrder < ApplicationRecord
         end
     end
 
+    def previous_delivery_fee
+        # invoices = service.query("Select * From Invoice Where CustomerRef = '75'")
+        # The above is how I will request the needed data pertaining to invoices.
+        user_id = self.user_order_id
+        user = User.find_by(id: user_id)
+        if user
+            customer_ref = user.quickbooks_id
+            if customer_ref != ""
+                invoice_service = Quickbooks::Service::Invoice.new
+                invoice = service.query("Select * From Invoice Where CustomerRef = '#{customer_ref}'")[0]
+                puts invoice
+                return "10.00"
+            else
+                return ""
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "A user was not found with the order information"
+                }
+            }
+        end
+    end
+
 end

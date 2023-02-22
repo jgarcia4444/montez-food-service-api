@@ -89,8 +89,6 @@ class AdminsController < ApplicationController
     end
 
     def pending_order_show
-        puts "Params from pending order show -------"
-        puts params
         if params[:order_id]
             order_id = params[:order_id]
             user_order = UserOrder.find_by(id: order_id)
@@ -115,7 +113,8 @@ class AdminsController < ApplicationController
                             deliveryAddress: formattedAddress,
                             totalPrice: user_order.total_price,
                             items: user_order.get_order_items,
-                            orderId: user_order.id
+                            orderId: user_order.id,
+                            previousDeliveryFee: user_order.previous_delivery_fee
                         }
                     }
                 else 
