@@ -86,17 +86,30 @@ class UserOrder < ApplicationRecord
     end
 
     def previous_delivery_fee
-        # invoices = service.query("Select * From Invoice Where CustomerRef = '75'")
-        # The above is how I will request the needed data pertaining to invoices.
-        user_id = self.user_order_id
+        user_id = self.user_id
         user = User.find_by(id: user_id)
         if user
             customer_ref = user.quickbooks_id
             if customer_ref != ""
                 invoice_service = Quickbooks::Service::Invoice.new
-                invoice = service.query("Select * From Invoice Where CustomerRef = '#{customer_ref}'")[0]
+                invoices = service.query("Select * From Invoice Where CustomerRef = '#{customer_ref}'")
                 puts invoice
+                address = Address.find_by(id: self.address_id)
+                if address
+                    invoices_with_same_address = invoices.filter(invoice => {
+                        # Here we would have to find a line_item.description in the invoice that matches and address. (Deliver To: #{address})
+                        # In the checking using the user_order address ensure to add Deliver To: at the beginning of the formatted address
+                        # Also ensure that the formatted user_order address is in the same format as the QB description.
+                })
                 return "10.00"
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "An address id was not present with the user order."
+                        }
+                    }
+                end
             else
                 return ""
             end
