@@ -106,6 +106,7 @@ class AdminsController < ApplicationController
                         zipCode: order_address.zip_code
                     }
                     if params[:service_info]
+                        service_info = params[:service_info]
                         render :json => {
                             success: true,
                             pendingOrderDetails: {
