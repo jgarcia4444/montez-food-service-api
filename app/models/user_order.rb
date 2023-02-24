@@ -105,7 +105,7 @@ class UserOrder < ApplicationRecord
                         # Also ensure that the formatted user_order address is in the same format as the QB description.
 
                         puts invoice.line_items
-                        invoice.line_items.each {|line_item| puts line_item.description}
+                        invoice.line_items.each {|line_item| puts "#{line_item.description}: Amount: #{line_item.amount}"}
                     end
                 return "10.00"
                 else
