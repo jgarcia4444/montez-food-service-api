@@ -105,18 +105,27 @@ class AdminsController < ApplicationController
                         state: order_address.state,
                         zipCode: order_address.zip_code
                     }
-                    render :json => {
-                        success: true,
-                        pendingOrderDetails: {
-                            companyName: user.company_name,
-                            createdAt: user_order.created_at,
-                            deliveryAddress: formattedAddress,
-                            totalPrice: user_order.total_price,
-                            items: user_order.get_order_items,
-                            orderId: user_order.id,
-                            previousDeliveryFee: user_order.previous_delivery_fee
+                    if params[service_info]
+                        render :json => {
+                            success: true,
+                            pendingOrderDetails: {
+                                companyName: user.company_name,
+                                createdAt: user_order.created_at,
+                                deliveryAddress: formattedAddress,
+                                totalPrice: user_order.total_price,
+                                items: user_order.get_order_items,
+                                orderId: user_order.id,
+                                previousDeliveryFee: user_order.previous_delivery_fee(service_info)
+                            }
                         }
-                    }
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "Access token information must be present."
+                            }
+                        }
+                    end
                 else 
                     render :json => {
                         success: false,

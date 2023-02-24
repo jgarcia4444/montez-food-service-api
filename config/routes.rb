@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   post "users/admin/login", to: "admins#login"
 
   get "pending-orders", to: "admins#pending_orders_index"
-  get "users/admin/pending-order/:order_id", to: "admins#pending_order_show"
+  post "users/admin/pending-order/:order_id", to: "admins#pending_order_show"
   post "users/admin/confirm-order", to: "admins#confirm_pending_order"
 
   post 'pending-orders/delete', to: "pending_orders#cancel_order"

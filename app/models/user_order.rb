@@ -85,13 +85,16 @@ class UserOrder < ApplicationRecord
         end
     end
 
-    def previous_delivery_fee
+    def previous_delivery_fee(service_info)
         user_id = self.user_id
         user = User.find_by(id: user_id)
         if user
             customer_ref = user.quickbooks_id
             if customer_ref != ""
+                access_token = OAuth2::AccessToken.new(OAUTH2_CLIENT, service_info[:access_token], refresh_token: service_info[:refresh_token])
                 invoice_service = Quickbooks::Service::Invoice.new
+                invoice_service.access_token = access_token
+                invoice_service.company_id = service[:realm_id]
                 invoices = invoice_service.query("Select * From Invoice Where CustomerRef = '#{customer_ref}'")
                 puts invoices
                 address = Address.find_by(id: self.address_id)
