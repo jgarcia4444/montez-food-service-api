@@ -96,12 +96,13 @@ class UserOrder < ApplicationRecord
                 puts invoices
                 address = Address.find_by(id: self.address_id)
                 if address
-                    invoices_with_same_address = invoices.filter(invoice => {
+                    invoices_with_same_address = invoices.select do |invoice|
                         # Here we would have to find a line_item.description in the invoice that matches an address. (Deliver To: #{address})
                         # In the checking using the user_order address ensure to add Deliver To: at the beginning of the formatted address
                         # Also ensure that the formatted user_order address is in the same format as the QB description.
+
                         puts invoice.line_items
-                })
+                    end
                 return "10.00"
                 else
                     render :json => {
