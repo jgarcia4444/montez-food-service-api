@@ -93,13 +93,14 @@ class UserOrder < ApplicationRecord
             if customer_ref != ""
                 invoice_service = Quickbooks::Service::Invoice.new
                 invoices = service.query("Select * From Invoice Where CustomerRef = '#{customer_ref}'")
-                puts invoice
+                puts invoices
                 address = Address.find_by(id: self.address_id)
                 if address
                     invoices_with_same_address = invoices.filter(invoice => {
-                        # Here we would have to find a line_item.description in the invoice that matches and address. (Deliver To: #{address})
+                        # Here we would have to find a line_item.description in the invoice that matches an address. (Deliver To: #{address})
                         # In the checking using the user_order address ensure to add Deliver To: at the beginning of the formatted address
                         # Also ensure that the formatted user_order address is in the same format as the QB description.
+                        puts invoice.line_items
                 })
                 return "10.00"
                 else
