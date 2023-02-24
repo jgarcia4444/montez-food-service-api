@@ -103,7 +103,6 @@ class UserOrder < ApplicationRecord
                         # Here we would have to find a line_item.description in the invoice that matches an address. (Deliver To: #{address})
                         # In the checking using the user_order address ensure to add Deliver To: at the beginning of the formatted address
                         # Also ensure that the formatted user_order address is in the same format as the QB description.
-                        invoice.line_items.each {|line_item| puts "#{line_item.description}: Amount: #{line_item.amount}"}
                         matching_address_line_items = invoice.line_items.select {|line_item.description == "Deliver To: #{address.format_address}"|}
                         if matching_address_line_items.count > 0
                             return {
