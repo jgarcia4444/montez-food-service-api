@@ -92,7 +92,7 @@ class UserOrder < ApplicationRecord
             customer_ref = user.quickbooks_id
             if customer_ref != ""
                 invoice_service = Quickbooks::Service::Invoice.new
-                invoices = service.query("Select * From Invoice Where CustomerRef = '#{customer_ref}'")
+                invoices = invoice_service.query("Select * From Invoice Where CustomerRef = '#{customer_ref}'")
                 puts invoices
                 address = Address.find_by(id: self.address_id)
                 if address
