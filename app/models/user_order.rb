@@ -114,7 +114,7 @@ class UserOrder < ApplicationRecord
                         latest_invoice = invoices_with_same_address[0]
                         latest_invoice.line_items.each do |line_item|
                             if line_item.description == "Deliver To: #{address.format_address}"
-                                return line_item.amount.to_s
+                                return line_item.amount.round(2).to_s
                             end
                         end
                     else
