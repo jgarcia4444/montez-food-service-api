@@ -96,7 +96,6 @@ class UserOrder < ApplicationRecord
                 invoice_service.access_token = access_token
                 invoice_service.company_id = service_info[:realm_id]
                 invoices = invoice_service.query("Select * From Invoice Where CustomerRef = '#{customer_ref}'")
-                puts invoices
                 address = Address.find_by(id: self.address_id)
                 if address
                     invoices_with_same_address = invoices.select do |invoice|
@@ -114,7 +113,7 @@ class UserOrder < ApplicationRecord
                         latest_invoice = invoices_with_same_address[0]
                         latest_invoice.line_items.each do |line_item|
                             if line_item.description == "Deliver To: #{address.format_address}"
-                                return line_item.amount.round(2).to_s
+                                return line_item.amount.to_s
                             end
                         end
                     else
