@@ -105,16 +105,18 @@ class UserOrder < ApplicationRecord
                         # Also ensure that the formatted user_order address is in the same format as the QB description.
                         matching_address_line_items = invoice.line_items.select {|line_item| line_item.description == "Deliver To: #{address.format_address}"}
                         if matching_address_line_items.count > 0
-                            {
-                                amount: matching_address_line_items[0].amount
-                            }
+                            true
                         else
                             false
                         end
                     end
                     if invoices_with_same_address.count > 0
-                        latest_amount = invoices_with_same_address[0]
-                        latest_amount.amount.to_s
+                        latest_invoice = invoices_with_same_address[0]
+                        latest_invoice.line_items.each do |line_item|
+                            if line_item.description == "Deliver To: #{address.format_address}"
+                                return line_item.amount.to_s
+                            end
+                        end
                     else
                         return ""
                     end
