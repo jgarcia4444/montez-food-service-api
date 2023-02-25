@@ -105,7 +105,7 @@ class UserOrder < ApplicationRecord
                         # Also ensure that the formatted user_order address is in the same format as the QB description.
                         matching_address_line_items = invoice.line_items.select {|line_item| line_item.description == "Deliver To: #{address.format_address}"}
                         if matching_address_line_items.count > 0
-                            return {
+                            {
                                 amount: matching_address_line_items[0].amount
                             }
                         else
