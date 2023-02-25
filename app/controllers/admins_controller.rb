@@ -188,7 +188,7 @@ class AdminsController < ApplicationController
                                                             order_address: order_address
                                                         },
                                                         invoice_info: {
-                                                            items: user_order_items   
+                                                            items: user_order_items,
                                                         }
                                                     }
                                                     invoice_created = Admin.send_invoice(info_for_invoice)

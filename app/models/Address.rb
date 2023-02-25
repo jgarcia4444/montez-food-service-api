@@ -12,7 +12,7 @@ class Address < ApplicationRecord
     end
 
     def format_address
-        "#{self.street}, #{self.city}, #{self.state}, #{self.zip_code}"
+        "#{self.street} #{self.city}, #{self.state}, #{self.zip_code}"
     end
 
 end
