@@ -114,6 +114,7 @@ class UserOrder < ApplicationRecord
                     end
                     if invoices_with_same_address.count > 0
                         latest_amount = invoices_with_same_address[0]
+                        latest_amount.amount.to_s
                     else
                         return ""
                     end
