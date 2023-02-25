@@ -177,31 +177,42 @@ class AdminsController < ApplicationController
                                                 access_token = service_info[:access_token]
                                                 if service_info[:refresh_token]
                                                     refresh_token = service_info[:refresh_token]
-                                                    info_for_invoice = {
-                                                        service_info: {
-                                                            realm_id: realm_id, 
-                                                            access_token: access_token,
-                                                            refresh_token: refresh_token
-                                                        },
-                                                        customer_info: {
-                                                            user: user,
-                                                            order_address: order_address
-                                                        },
-                                                        invoice_info: {
-                                                            items: user_order_items,
+                                                    if confirmation_information[:delivery_item]
+                                                        delivery_item = confirmation_information[:delivery_item]
+                                                        user_order_items.append(delivery_item)
+                                                        info_for_invoice = {
+                                                            service_info: {
+                                                                realm_id: realm_id, 
+                                                                access_token: access_token,
+                                                                refresh_token: refresh_token
+                                                            },
+                                                            customer_info: {
+                                                                user: user,
+                                                                order_address: order_address
+                                                            },
+                                                            invoice_info: {
+                                                                items: user_order_items,
+                                                            }
                                                         }
-                                                    }
-                                                    invoice_created = Admin.send_invoice(info_for_invoice)
-                                                    if invoice_created == true
-                                                        render :json => {
-                                                            success: true,
-                                                            orderId: user_order.id
-                                                        }
+                                                        invoice_created = Admin.send_invoice(info_for_invoice)
+                                                        if invoice_created == true
+                                                            render :json => {
+                                                                success: true,
+                                                                orderId: user_order.id
+                                                            }
+                                                        else
+                                                            render :json => {
+                                                                success: false,
+                                                                error: {
+                                                                    message: "There was an error creating the invoice through email."
+                                                                }
+                                                            }
+                                                        end
                                                     else
                                                         render :json => {
                                                             success: false,
                                                             error: {
-                                                                message: "There was an error creating the invoice through email."
+                                                                message: "A delivery item must be sent to this route."
                                                             }
                                                         }
                                                     end

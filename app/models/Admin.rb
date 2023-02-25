@@ -26,7 +26,6 @@
         puts "Here is the user.quickbooks_id"
         puts user.quickbooks_id
         if user.quickbooks_id == ""
-            puts "NO QUICKBOOKS_ID FOUND"
             customer = Quickbooks::Model::Customer.new
             customer.company_name = user.company_name
             customer.email_address = user.email
@@ -42,8 +41,6 @@
             address.postal_code = order_address.zip_code
             customer.billing_address = address
             serviced_customer = customer_service.create(customer)
-            puts "HERE IS THE SERVICED CUSTOMER ID"
-            puts serviced_customer.id
             user.update(quickbooks_id: serviced_customer.id)
             if user.valid? == false
                 render :json => {
@@ -54,7 +51,6 @@
                 }
             end
         else
-            puts "USER QUICKBOOK_ID FOUND!!!"
             customer = customer_service.fetch_by_id(user.quickbooks_id)
             address = Quickbooks::Model::PhysicalAddress.new
             address.line1 = order_address.street
@@ -73,7 +69,7 @@
         invoice.customer_id = user.quickbooks_id
         items = invoice_info[:items]
         invoice_with_line_items = Admin.add_line_items(items, invoice)
-
+        
         invoice_service = Quickbooks::Service::Invoice.new
         invoice_service.company_id = service_info[:realm_id]
         invoice_service.access_token = access_token
